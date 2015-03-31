@@ -2,6 +2,7 @@ package com.communication;
 
 import com.message.*;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
 import java.io.IOException;
 
@@ -15,6 +16,7 @@ public class FacadeCom {
     private UDPSender sender;
     private UDPReceiver receiver;
     private String nom;
+    private InetAddress addrDist;
 
 
 
@@ -49,4 +51,14 @@ public class FacadeCom {
     void processInfo(Informations infos){
 
     }
+
+
+    public void setAddrDist(InetAddress addr) {
+        this.addrDist = addr;
+    }
+
+    public InetAddress getAddrDist() {
+        return this.addrDist;
+    }
+
 }

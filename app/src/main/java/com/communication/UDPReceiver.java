@@ -6,6 +6,7 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
 import com.message.*;
 
@@ -22,6 +23,7 @@ public class UDPReceiver extends Thread {
     private DatagramSocket server ;
     private byte[] bufIn;
     private String nom;
+    private InetAddress addrDist;
 
 
     /**
@@ -29,6 +31,7 @@ public class UDPReceiver extends Thread {
      * instantiate the ChatNI field, the Datagram socket field, and the byte[] field.
      * @param f : FacadeCom
      * @param soc : DatagramSocket
+     * @param nom : String
      * @throws IOException
      */
     public UDPReceiver(FacadeCom f, DatagramSocket soc, String nom) throws IOException {
@@ -36,6 +39,7 @@ public class UDPReceiver extends Thread {
         this.server = soc;
         bufIn = new byte[5000];
         this.nom = nom;
+        this.addrDist = null;
     }
 
 
@@ -54,10 +58,16 @@ public class UDPReceiver extends Thread {
                 DatagramPacket packet = new DatagramPacket(bufIn, bufIn.length);
                 this.server.receive(packet);
 
+                if (addrDist == null) {
+                    addrDist = packet.getAddress();
+                    this.setFacComAddrDist();
+                }
+
                 // Traitement du packet pour le re-transformer en AbstractMessage
                 byteIn.reset();
                 in = new ObjectInputStream(byteIn);
                 AbstractMessage inMessage = (AbstractMessage) in.readObject();
+
 
                 if (inMessage.getTypeContenu() == typeContenu.HELLO){
                     Hello helloSerialise = (Hello) inMessage;
@@ -104,4 +114,10 @@ public class UDPReceiver extends Thread {
     public void setServer(DatagramSocket server) {
         this.server = server;
     }
+
+    public void setFacComAddrDist() {
+        this.fcom.setAddrDist(this.addrDist);
+    }
+
+
 }

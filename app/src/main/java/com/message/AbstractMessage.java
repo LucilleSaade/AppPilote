@@ -1,5 +1,6 @@
 package com.message;
 import java.io.Serializable;
+import java.net.InetAddress;
 
 
 @SuppressWarnings("serial")
@@ -8,8 +9,6 @@ public abstract class AbstractMessage implements Serializable {
 
     // Identifie la nature du message envoye
     protected typeContenu type;
-
-
 
 
     //////////////////////////////////////////

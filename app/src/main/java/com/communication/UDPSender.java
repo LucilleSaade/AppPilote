@@ -21,6 +21,7 @@ public class UDPSender {
     private ByteArrayOutputStream bos;
     private DatagramSocket soc;
     private int destPort;
+    private InetAddress addrDist;
 
 
     /**
@@ -84,13 +85,9 @@ public class UDPSender {
     }
 
     public void sendMessage(Informations obj) {
-        InetAddress address;
-
         try {
-            // Preparation de l'adresse destinataire
-           // address = attAddressIPDest;
             System.out.println("Envoie d'un message à l'autre");
-           // sendTo(obj, address);
+           sendTo(obj, this.addrDist);
         } catch (Exception e) {
             e.printStackTrace();
         }
