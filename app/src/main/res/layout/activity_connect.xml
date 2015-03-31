@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.lucille.apppilote.ConnectActivity"
+    android:id="@+id/Relative">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Application Name"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"
+
+        android:autoText="false"
+        android:textColor="#ff6777ff"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentLeft="false" />
+
+    <Button
+        android:layout_width="@dimen/dialog_fixed_width_major"
+        android:layout_height="@dimen/dialog_fixed_width_major"
+        android:text="Connect"
+        android:id="@+id/button"
+        android:elegantTextHeight="true"
+        android:enabled="false"
+        android:focusableInTouchMode="false"
+        android:onClick="connection"
+        android:textColor="#F00"
+        android:textSize="@android:dimen/app_icon_size"
+        android:background="#d1333333"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
