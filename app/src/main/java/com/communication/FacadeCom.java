@@ -36,22 +36,42 @@ public class FacadeCom {
         }
     }
 
-    void processHello(){
 
+    public void demandeConnect() {
+        this.sender.connecter();
+
+        // gestion de perte
     }
 
-    void processHelloAck(){
-
+    public void demandeDeconnect() {
+        this.sender.envoiGoodbye();
+        // gestion de perte : envoi jusqu'à trois fois goodbye si on ne recoit pas de goodbye de l'autre, après ça on se considére deconnecté.
+        this.addrDist = null;
+        this.sender.setAddrDist(null);
     }
 
-    void processGoodbye(){
-
+    public void processHello(InetAddress addr){
+        this.addrDist = addr;
+        this.sender.setAddrDist(this.addrDist);
+        this.sender.envoiHelloAck();
     }
 
-    void processInfo(Informations infos){
-
+    public void processHelloAck(InetAddress addr){
+        this.addrDist = addr;
+        this.sender.setAddrDist(this.addrDist);
+        // appeler fonction connexion réussi de l'interface
     }
 
+    public void processGoodbye(){
+        // appeler fonction deconnexion réussi de l'interface
+        // gestion de ack : envoie goobye
+        this.addrDist = null;
+        this.sender.setAddrDist(null);
+    }
+
+    public void processInfo(Informations infos){
+
+    }
 
     public void setAddrDist(InetAddress addr) {
         this.addrDist = addr;

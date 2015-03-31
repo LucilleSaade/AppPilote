@@ -35,6 +35,7 @@ public class UDPSender {
         this.bos = new ByteArrayOutputStream(5000);
         this.soc = soc;
         this.destPort = port;
+        this.addrDist = null;
     }
 
 
@@ -44,7 +45,7 @@ public class UDPSender {
      * @param obj : AbstractMessage
      * @param address : InetAddress
      */
-    private void sendTo(Informations obj, InetAddress address) {
+    private void sendTo(AbstractMessage obj, InetAddress address) {
         ObjectOutput out = null;
         DatagramPacket packet;
         byte[] bufOut;
@@ -73,12 +74,38 @@ public class UDPSender {
     }
 
 
-    public void connecter(Informations obj) {
+    public void connecter() {
         InetAddress address;
+        Hello obj = new Hello();
         try {
             // Broadcast pour la connection
             address = InetAddress.getByName("255.255.255.255");
-            sendTo(obj, address);
+            sendTo((AbstractMessage) obj, address);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**************************************
+     * Attention catcher exception addr = null;
+     ******************************************/
+
+    public void envoiHelloAck() {
+        HelloAck obj = new HelloAck();
+        try {
+            // Broadcast pour la connection
+            sendTo((AbstractMessage) obj, this.addrDist);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void envoiGoodbye() {
+        Goodbye obj = new Goodbye();
+        try {
+            // Broadcast pour la connection
+            sendTo((AbstractMessage) obj, this.addrDist);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -86,14 +113,16 @@ public class UDPSender {
 
     public void sendMessage(Informations obj) {
         try {
-            System.out.println("Envoie d'un message à l'autre");
-           sendTo(obj, this.addrDist);
+            System.out.println("Envoi d'un message à l'autre");
+            sendTo(obj, this.addrDist);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 
-
+    public void setAddrDist(InetAddress addr) {
+        this.addrDist = addr;
+    }
 }
 

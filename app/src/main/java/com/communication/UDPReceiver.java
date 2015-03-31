@@ -23,7 +23,6 @@ public class UDPReceiver extends Thread {
     private DatagramSocket server ;
     private byte[] bufIn;
     private String nom;
-    private InetAddress addrDist;
 
 
     /**
@@ -39,7 +38,6 @@ public class UDPReceiver extends Thread {
         this.server = soc;
         bufIn = new byte[5000];
         this.nom = nom;
-        this.addrDist = null;
     }
 
 
@@ -58,11 +56,6 @@ public class UDPReceiver extends Thread {
                 DatagramPacket packet = new DatagramPacket(bufIn, bufIn.length);
                 this.server.receive(packet);
 
-                if (addrDist == null) {
-                    addrDist = packet.getAddress();
-                    this.setFacComAddrDist();
-                }
-
                 // Traitement du packet pour le re-transformer en AbstractMessage
                 byteIn.reset();
                 in = new ObjectInputStream(byteIn);
@@ -72,11 +65,11 @@ public class UDPReceiver extends Thread {
                 if (inMessage.getTypeContenu() == typeContenu.HELLO){
                     Hello helloSerialise = (Hello) inMessage;
                     System.out.println(this.nom + " : Je reçois un HELLO ! " );
-                    this.fcom.processHello();
+                    this.fcom.processHello(packet.getAddress());
                 } else if (inMessage.getTypeContenu() == typeContenu.HELLOACK) {
                     HelloAck helloackSerialise = (HelloAck) inMessage;
                     System.out.println(this.nom + " : Je reçois HELLOACK ! " );
-                    this.fcom.processHelloAck();
+                    this.fcom.processHelloAck(packet.getAddress());
                 } else if (inMessage.getTypeContenu() == typeContenu.GOODBYE) {
                     Goodbye goodbyeSerialise = (Goodbye) inMessage;
                     System.out.println(this.nom + " : Je reçois un GOODBYE ! ");
@@ -114,10 +107,5 @@ public class UDPReceiver extends Thread {
     public void setServer(DatagramSocket server) {
         this.server = server;
     }
-
-    public void setFacComAddrDist() {
-        this.fcom.setAddrDist(this.addrDist);
-    }
-
 
 }
