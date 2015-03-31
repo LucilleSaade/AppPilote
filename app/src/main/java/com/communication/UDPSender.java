@@ -86,9 +86,9 @@ public class UDPSender {
         }
     }
 
-    /**************************************
-     * Attention catcher exception addr = null;
-     ******************************************/
+    /********************************************
+     * Attention catcher exception addr = null; *
+     ********************************************/
 
     public void envoiHelloAck() {
         HelloAck obj = new HelloAck();
