@@ -28,13 +28,21 @@
         android:text="Connect"
         android:id="@+id/button"
         android:elegantTextHeight="true"
-        android:enabled="false"
-        android:focusableInTouchMode="false"
-        android:onClick="connection"
+        android:enabled="true"
         android:textColor="#F00"
         android:textSize="@android:dimen/app_icon_size"
         android:background="#d1333333"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Attente !"
+        android:id="@+id/textView2"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="35dp" />
 
 </RelativeLayout>

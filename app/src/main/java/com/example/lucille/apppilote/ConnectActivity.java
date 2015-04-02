@@ -1,17 +1,34 @@
 package com.example.lucille.apppilote;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
+import android.view.*;
+import android.widget.TextView;
+import android.widget.Button;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.content.Intent;
 
+public class ConnectActivity extends Activity {
 
-public class ConnectActivity extends ActionBarActivity {
+    Button btn ;
+    TextView t1 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
+
+        btn = (Button) findViewById(R.id.button);
+        t1 = (TextView) findViewById(R.id.textView2);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ConnectActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 
@@ -37,8 +54,4 @@ public class ConnectActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public int connection(){
-        System.out.println("Coucou de la fonction connect :D \n");
-        return 0 ;
-    }
 }
