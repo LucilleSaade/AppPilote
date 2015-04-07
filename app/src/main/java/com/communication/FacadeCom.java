@@ -17,7 +17,7 @@ public class FacadeCom {
     private UDPReceiver receiver;
     private String nom;
     private InetAddress addrDist;
-
+    private etatCom etat;
 
 
     public FacadeCom (String nom) {
@@ -29,6 +29,7 @@ public class FacadeCom {
             this.sender = new UDPSender(this.port, this.daSocket);
             this.receiver = new UDPReceiver(this, this.daSocket, this.nom);
             this.receiver.start();
+            this.etat=etatCom.Deconnecte;
         } catch (SocketException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -38,33 +39,60 @@ public class FacadeCom {
 
 
     public void demandeConnect() {
-        this.sender.connecter();
+        this.etat=etatCom.EnConnexion;
+        while(this.etat==etatCom.EnConnexion) {
+            this.sender.connecter();
+            try {
+                Thread.currentThread().sleep(200);
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+        }
 
-        // gestion de perte
     }
 
     public void demandeDeconnect() {
-        this.sender.envoiGoodbye();
-        // gestion de perte : envoi jusqu'à trois fois goodbye si on ne recoit pas de goodbye de l'autre, après ça on se considére deconnecté.
+       int compteur=0;
+        this.etat=etatCom.Fin_Wait1;
+        while(this.etat==etatCom.Fin_Wait1 && compteur <3){
+            this.sender.envoiGoodbye();
+            compteur ++;
+            try {
+                Thread.currentThread().sleep(200);
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+        this.etat=etatCom.Deconnecte;
         this.addrDist = null;
         this.sender.setAddrDist(null);
     }
 
     public void processHello(InetAddress addr){
         this.addrDist = addr;
+        this.etat=etatCom.Connecte;
         this.sender.setAddrDist(this.addrDist);
         this.sender.envoiHelloAck();
     }
 
     public void processHelloAck(InetAddress addr){
         this.addrDist = addr;
+        this.etat=etatCom.Connecte;
         this.sender.setAddrDist(this.addrDist);
         // appeler fonction connexion réussi de l'interface
     }
 
     public void processGoodbye(){
-        // appeler fonction deconnexion réussi de l'interface
-        // gestion de ack : envoie goobye
+        if(this.etat==etatCom.Fin_Wait1){
+            this.etat=etatCom.Deconnecte;
+            //fonction déconnexion réussie
+        }
+        else{
+            this.sender.envoiGoodbye();
+            this.etat=etatCom.Deconnecte;
+        }
         this.addrDist = null;
         this.sender.setAddrDist(null);
     }
@@ -80,5 +108,6 @@ public class FacadeCom {
     public InetAddress getAddrDist() {
         return this.addrDist;
     }
+
 
 }
