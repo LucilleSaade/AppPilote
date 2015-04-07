@@ -5,5 +5,7 @@ package com.message;
  */
 public class Informations extends AbstractMessage{
 
-
+    public Informations(){
+        this.type=typeContenu.INFORMATIONS;
+    }
 }
