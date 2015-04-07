@@ -6,6 +6,8 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.io.IOException;
 
+import static java.lang.Thread.*;
+
 /**
  * Created by lucille on 24/03/15.
  */
@@ -43,7 +45,7 @@ public class FacadeCom {
         while(this.etat==etatCom.EnConnexion) {
             this.sender.connecter();
             try {
-                Thread.currentThread().sleep(200);
+                currentThread().sleep(200);
             }
             catch(Exception e){
                 e.printStackTrace();
@@ -59,7 +61,7 @@ public class FacadeCom {
             this.sender.envoiGoodbye();
             compteur ++;
             try {
-                Thread.currentThread().sleep(200);
+                currentThread().sleep(200);
             }
             catch(Exception e){
                 e.printStackTrace();
