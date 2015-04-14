@@ -36,7 +36,7 @@ public class Screen extends Activity {
     }
 
 
-    // Remplit le textViex nomme console à chaque nouveau message)
+    // Remplit le textView nomme console à chaque nouveau message)
     public void onNewMessage(String msg) {
 
         modifyText = console.getText().toString() + "\n" + msg;
