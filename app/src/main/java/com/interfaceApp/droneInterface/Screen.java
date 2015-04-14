@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.interfaceApp.R;
@@ -14,13 +16,35 @@ import com.interfaceApp.R;
  */
 public class Screen extends Activity {
 
+
+    private TextView console;
+    private String modifyText;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.system_page);
+        setContentView(R.layout.activity_drone);
+
+        console = (TextView) findViewById(R.id.Console);
+
+        onMessage("Youhou");
+        onNewMessage("Salut");
+        int i;
+
+        for (i=0; i<100; i++)
+            onNewMessage("Les petits chou");
 
     }
 
 
+    // Remplit le textViex nomme console à chaque nouveau message)
+    public void onNewMessage(String msg) {
+
+        modifyText = console.getText().toString() + "\n" + msg;
+        console.setText(modifyText);
+    }
+
+
+    // Affiche un message ephémere en bas de l'ecran
     public void onMessage(String msg) {
 
         Context context = getApplicationContext();
