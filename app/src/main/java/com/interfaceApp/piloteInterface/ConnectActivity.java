@@ -8,12 +8,14 @@ import android.widget.Button;
 import android.view.Menu;
 import android.content.Intent;
 
+import com.interfaceApp.FacadeInterface;
 import com.interfaceApp.R;
 
 public class ConnectActivity extends Activity {
 
-    Button btn ;
-    TextView t1 ;
+    private Button btn ;
+    private TextView t1 ;
+    private FacadeInterface inter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,11 +24,13 @@ public class ConnectActivity extends Activity {
 
         btn = (Button) findViewById(R.id.button);
         t1 = (TextView) findViewById(R.id.textView2);
+        this.inter = FacadeInterface.getInstance(this);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ConnectActivity.this, HomeActivity.class);
+                ConnectActivity.this.inter.demandeConnect();
                 startActivity(intent);
             }
         });

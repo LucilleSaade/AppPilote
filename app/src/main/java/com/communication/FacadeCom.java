@@ -1,5 +1,7 @@
 package com.communication;
 
+import com.interfaceApp.FacadeInterface;
+import com.interfaceApp.typeUser;
 import com.message.*;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -17,12 +19,13 @@ public class FacadeCom {
     private int port;
     private UDPSender sender;
     private UDPReceiver receiver;
-    private String nom;
+    private typeUser nom;
     private InetAddress addrDist;
     private etatCom etat;
+    private FacadeInterface inter;
 
 
-    public FacadeCom (String nom) {
+    public FacadeCom (typeUser nom, FacadeInterface inter) {
         try {
             this.nom = nom;
             this.port = 1234;
@@ -32,6 +35,7 @@ public class FacadeCom {
             this.receiver = new UDPReceiver(this, this.daSocket, this.nom);
             this.receiver.start();
             this.etat=etatCom.Deconnecte;
+            this.inter = inter;
         } catch (SocketException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -39,7 +43,7 @@ public class FacadeCom {
         }
     }
 
-
+    // pilote
     public void demandeConnect() {
         this.etat=etatCom.EnConnexion;
         while(this.etat==etatCom.EnConnexion) {
@@ -54,6 +58,8 @@ public class FacadeCom {
 
     }
 
+
+    // pilote
     public void demandeDeconnect() {
        int compteur=0;
         this.etat=etatCom.Fin_Wait1;
@@ -72,11 +78,15 @@ public class FacadeCom {
         this.sender.setAddrDist(null);
     }
 
+    // drone normalement
     public void processHello(InetAddress addr){
         this.addrDist = addr;
         this.etat=etatCom.Connecte;
         this.sender.setAddrDist(this.addrDist);
         this.sender.envoiHelloAck();
+        if (this.nom == typeUser.DRONE) {
+            this.inter.printTxt("Reception d'un hello");
+        }
     }
 
     public void processHelloAck(InetAddress addr){
@@ -84,6 +94,9 @@ public class FacadeCom {
         this.etat=etatCom.Connecte;
         this.sender.setAddrDist(this.addrDist);
         // appeler fonction connexion réussi de l'interface
+        if (this.nom == typeUser.DRONE) {
+            this.inter.printTxt("Reception d'un hello ack");
+        }
     }
 
     public void processGoodbye(){
@@ -93,14 +106,19 @@ public class FacadeCom {
         }
         else{
             this.sender.envoiGoodbye();
+            if (this.nom == typeUser.DRONE) {
+                this.inter.printTxt("Reception d'un goodbye");
+            }
             this.etat=etatCom.Deconnecte;
+            if (this.nom == typeUser.DRONE) {
+                this.inter.printTxt("Envoie d'un goodbye");
+            }
         }
         this.addrDist = null;
         this.sender.setAddrDist(null);
     }
 
     public void processInfo(Informations infos){
-
     }
 
     public void setAddrDist(InetAddress addr) {

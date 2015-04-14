@@ -8,6 +8,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+
+import com.interfaceApp.typeUser;
 import com.message.*;
 
 /**
@@ -22,7 +24,7 @@ public class UDPReceiver extends Thread {
     private FacadeCom fcom; //A IMPLEMENTER
     private DatagramSocket server ;
     private byte[] bufIn;
-    private String nom;
+    private typeUser nom;
 
 
     /**
@@ -33,7 +35,7 @@ public class UDPReceiver extends Thread {
      * @param nom : String
      * @throws IOException
      */
-    public UDPReceiver(FacadeCom f, DatagramSocket soc, String nom) throws IOException {
+    public UDPReceiver(FacadeCom f, DatagramSocket soc, typeUser nom) throws IOException {
         this.fcom = f;
         this.server = soc;
         bufIn = new byte[5000];

@@ -26,12 +26,14 @@ public class Screen extends Activity {
 
         console = (TextView) findViewById(R.id.Console);
 
+       /* Test des fonctions
         onMessage("Youhou");
         onNewMessage("Salut");
         int i;
 
         for (i=0; i<100; i++)
             onNewMessage("Les petits chou");
+       */
 
     }
 

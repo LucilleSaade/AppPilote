@@ -23,10 +23,10 @@ public class Accueil extends Activity {
     }
 
     public void toDrone(View v) {
-        facade.demarrageActivity(Screen.class, "drone");
+        facade.demarrageActivity(Screen.class, typeUser.DRONE);
     }
 
     public void toPilote(View v) {
-        facade.demarrageActivity(ConnectActivity.class, "pilote");
+        facade.demarrageActivity(ConnectActivity.class, typeUser.PILOTE);
     }
 }

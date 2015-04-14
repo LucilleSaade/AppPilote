@@ -15,6 +15,7 @@ public class FacadeInterface {
     private Screen screen;
     private Activity firstActivity;
     private FacadeCom com;
+    private typeUser user;
 
 
     private FacadeInterface(Activity activity) {
@@ -26,11 +27,11 @@ public class FacadeInterface {
      * permet de démarrer l'activité associé au bon user et démarre la facade com
      * @param activity
      */
-    public void demarrageActivity(Class activity, String user) {
+    public void demarrageActivity(Class activity, typeUser user) {
         Intent i = new Intent(firstActivity, activity);
         firstActivity.startActivityForResult(i, 1);
-
-        this.com = new FacadeCom(user);
+        this.user = user;
+        this.com = new FacadeCom(user, this);
     }
 
 
@@ -56,12 +57,20 @@ public class FacadeInterface {
     }
 
 
+    public void demandeConnect() {
+        this.com.demandeConnect();
+    }
+
+    public void demandeDeconnect() {
+        this.com.demandeDeconnect();
+    }
+
     /********************************
      *       PARTIE POUR DRONE      *
      ********************************/
 
     // A n'utiliser que dans le cas du drone !!!!!
-    public void printText(String text) {
+    public void printTxt(String text) {
         ((Screen) firstActivity).onNewMessage(text);
     }
 
