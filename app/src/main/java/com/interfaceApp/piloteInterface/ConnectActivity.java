@@ -1,4 +1,4 @@
-package com.piloteInterface;
+package com.interfaceApp.piloteInterface;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.view.Menu;
 import android.content.Intent;
 
-import com.example.lucille.piloteInterface.R;
+import com.interfaceApp.R;
 
 public class ConnectActivity extends Activity {
 
