@@ -47,7 +47,11 @@ public class FacadeCom {
     public void demandeConnect() {
         this.etat=etatCom.EnConnexion;
         while(this.etat==etatCom.EnConnexion) {
-            this.sender.connecter();
+
+            ComParams params = new ComParams(this.sender,typeContenu.HELLO);
+            UDPAsyncTask task = new UDPAsyncTask();
+            task.execute(params);
+
             try {
                 currentThread().sleep(200);
             }
@@ -64,7 +68,9 @@ public class FacadeCom {
        int compteur=0;
         this.etat=etatCom.Fin_Wait1;
         while(this.etat==etatCom.Fin_Wait1 && compteur <3){
-            this.sender.envoiGoodbye();
+            ComParams params = new ComParams(this.sender,typeContenu.GOODBYE);
+            UDPAsyncTask task = new UDPAsyncTask();
+            task.execute(params);
             compteur ++;
             try {
                 currentThread().sleep(200);
@@ -83,7 +89,9 @@ public class FacadeCom {
         this.addrDist = addr;
         this.etat=etatCom.Connecte;
         this.sender.setAddrDist(this.addrDist);
-        this.sender.envoiHelloAck();
+        ComParams params = new ComParams(this.sender,typeContenu.HELLOACK);
+        UDPAsyncTask task = new UDPAsyncTask();
+        task.execute(params);
         if (this.nom == typeUser.DRONE) {
             this.inter.printTxt("Reception d'un hello");
         }
@@ -105,7 +113,9 @@ public class FacadeCom {
             //fonction déconnexion réussie
         }
         else{
-            this.sender.envoiGoodbye();
+            ComParams params = new ComParams(this.sender,typeContenu.GOODBYE);
+            UDPAsyncTask task = new UDPAsyncTask();
+            task.execute(params);
             if (this.nom == typeUser.DRONE) {
                 this.inter.printTxt("Reception d'un goodbye");
             }
@@ -121,6 +131,11 @@ public class FacadeCom {
     public void processInfo(Informations infos){
     }
 
+    public void erreurArg() {
+        this.inter.printTxt("Mauvais params passés a UDPAsyncTAsk");
+    }
+
+
     public void setAddrDist(InetAddress addr) {
         this.addrDist = addr;
     }
@@ -128,6 +143,12 @@ public class FacadeCom {
     public InetAddress getAddrDist() {
         return this.addrDist;
     }
+
+    public UDPSender getSender() {
+        return sender;
+    }
+
+
 
 
 }

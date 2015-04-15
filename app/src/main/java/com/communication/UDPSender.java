@@ -38,6 +38,9 @@ public class UDPSender {
         this.addrDist = null;
     }
 
+    /********
+     * On recoit son propre Hello !!
+     **********/
 
     /**
      * sendTo() : if the AbstractMessage is a Hello or a GoodBye, send on Broadcast the AbstractMessage after having serialized it
@@ -119,7 +122,6 @@ public class UDPSender {
             e.printStackTrace();
         }
     }
-
 
     public void setAddrDist(InetAddress addr) {
         this.addrDist = addr;
