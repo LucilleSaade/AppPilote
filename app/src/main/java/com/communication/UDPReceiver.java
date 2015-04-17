@@ -70,8 +70,6 @@ public class UDPReceiver extends Thread {
                     if (inMessage.getTypeContenu() == typeContenu.HELLO) {
                         Hello helloSerialise = (Hello) inMessage;
                         System.out.println(this.nom + " : Je reçois un HELLO de " + packet.getAddress() + " ! ");
-
-                        System.out.println(this.nom + " : Je suis " +this.addrLoc + " ! ");
                         this.fcom.processHello(packet.getAddress());
                     } else if (inMessage.getTypeContenu() == typeContenu.HELLOACK) {
                         HelloAck helloackSerialise = (HelloAck) inMessage;
@@ -87,7 +85,7 @@ public class UDPReceiver extends Thread {
                         this.fcom.processInfo(msg);
                     }
                 } else {
-                System.out.println(this.nom + " : Je reçois mon propre Hello (" + packet.getAddress() + ") je ne le traite pas ! " + " ! ");
+                   System.out.println(this.nom + " : Je reçois mon propre Hello (" + packet.getAddress() + ") je ne le traite pas ! " + " ! ");
                 }
             }
         } catch (SocketException e) {

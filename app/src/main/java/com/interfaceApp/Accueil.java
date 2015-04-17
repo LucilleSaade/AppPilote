@@ -12,6 +12,7 @@ import com.interfaceApp.piloteInterface.*;
 public class Accueil extends Activity {
 
     private FacadeInterface facade;
+    private boolean drone;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,10 +24,10 @@ public class Accueil extends Activity {
     }
 
     public void toDrone(View v) {
-        facade.demarrageActivity(Screen.class, typeUser.DRONE);
+        facade.demarrageActivity(Screen.class, typeUser.DRONE, true);
     }
 
     public void toPilote(View v) {
-        facade.demarrageActivity(ConnectActivity.class, typeUser.PILOTE);
+        facade.demarrageActivity(ConnectActivity.class, typeUser.PILOTE, false);
     }
 }

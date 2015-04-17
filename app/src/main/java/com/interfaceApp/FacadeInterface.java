@@ -12,15 +12,16 @@ import com.interfaceApp.droneInterface.Screen;
 public class FacadeInterface {
 
     private static FacadeInterface singleton ;
-    private Screen drone;
+    private Screen droneActivity;
     private Activity firstActivity;
     private FacadeCom com;
     private typeUser user;
+    private boolean drone;
 
 
     private FacadeInterface(Activity activity) {
         firstActivity = activity;
-        this.drone = null;
+        this.droneActivity = null;
     }
 
 
@@ -28,11 +29,12 @@ public class FacadeInterface {
      * permet de démarrer l'activité associé au bon user et démarre la facade com
      * @param activity
      */
-    public void demarrageActivity(Class activity, typeUser user) {
+    public void demarrageActivity(Class activity, typeUser user, boolean drone) {
         Intent i = new Intent(firstActivity, activity);
         firstActivity.startActivityForResult(i, 1);
         this.user = user;
-        this.com = new FacadeCom(user, this);
+        this.drone = drone;
+        this.com = new FacadeCom(user, this, this.drone);
     }
 
 
@@ -72,11 +74,11 @@ public class FacadeInterface {
 
     // A n'utiliser que dans le cas du drone !!!!!
     public void printTxt(String text) {
-      //  if(this.drone != null)
-            drone.onNewMessage(text);
+      //  if(this.drone)
+            droneActivity.onNewMessage(text);
     }
 
-    public void setDrone(Screen drone) {
-        this.drone = drone;
+    public void setDrone(Screen droneAct) {
+        this.droneActivity = droneAct;
     }
 }

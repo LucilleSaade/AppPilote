@@ -25,6 +25,7 @@ public class FacadeCom {
     private InetAddress addrLoc;
     private etatCom etat;
     private FacadeInterface inter;
+    private boolean drone;
 
 
     /**
@@ -35,7 +36,7 @@ public class FacadeCom {
      */
 
 
-    public FacadeCom(typeUser nom, FacadeInterface inter) {
+    public FacadeCom(typeUser nom, FacadeInterface inter, boolean drone) {
         try {
             this.nom = nom;
             this.port = 1234;
@@ -49,6 +50,7 @@ public class FacadeCom {
             this.addrLoc = IPAddress.getIp();
             this.etat = etatCom.Deconnecte;
             this.inter = inter;
+            this.drone = drone;
         } catch (SocketException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -61,7 +63,7 @@ public class FacadeCom {
         this.etat = etatCom.EnConnexion;
         while (this.etat == etatCom.EnConnexion) {
 
-            ComParams params = new ComParams(this, typeContenu.HELLO, false);
+            ComParams params = new ComParams(this, typeContenu.HELLO, this.drone);
             UDPAsyncTask task = new UDPAsyncTask();
             task.execute(params);
 
@@ -80,7 +82,7 @@ public class FacadeCom {
         int compteur = 0;
         this.etat = etatCom.Fin_Wait1;
         while (this.etat == etatCom.Fin_Wait1 && compteur < 3) {
-            ComParams params = new ComParams(this, typeContenu.GOODBYE, false);
+            ComParams params = new ComParams(this, typeContenu.GOODBYE, this.drone);
             UDPAsyncTask task = new UDPAsyncTask();
             task.execute(params);
             compteur++;
@@ -100,7 +102,7 @@ public class FacadeCom {
         this.addrDist = addr;
         this.etat = etatCom.Connecte;
         this.sender.setAddrDist(this.addrDist);
-        ComParams params = new ComParams(this, typeContenu.HELLOACK, true);
+        ComParams params = new ComParams(this, typeContenu.HELLOACK, this.drone);
         UDPAsyncTask task = new UDPAsyncTask();
         task.execute(params);
         if (this.nom == typeUser.DRONE) {
@@ -122,9 +124,9 @@ public class FacadeCom {
         } else {
             ComParams params;
             if (this.nom == typeUser.DRONE) {
-                params = new ComParams(this, typeContenu.GOODBYE, true);
+                params = new ComParams(this, typeContenu.GOODBYE, this.drone);
             } else {
-                params = new ComParams(this, typeContenu.GOODBYE, false);
+                params = new ComParams(this, typeContenu.GOODBYE, this.drone);
             }
             UDPAsyncTask task = new UDPAsyncTask();
             task.execute(params);
