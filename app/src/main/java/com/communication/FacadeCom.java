@@ -68,7 +68,7 @@ public class FacadeCom {
             task.execute(params);
 
             try {
-                currentThread().sleep(200);
+                currentThread().sleep(1000);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -87,7 +87,7 @@ public class FacadeCom {
             task.execute(params);
             compteur++;
             try {
-                currentThread().sleep(200);
+                currentThread().sleep(1000);
             } catch (Exception e) {
                 e.printStackTrace();
             }
