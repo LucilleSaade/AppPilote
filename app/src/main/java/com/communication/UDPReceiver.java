@@ -66,7 +66,7 @@ public class UDPReceiver extends Thread {
                 AbstractMessage inMessage = (AbstractMessage) in.readObject();
 
 
-                if((packet.getAddress().equals(this.addrLoc))) {
+                if(!(packet.getAddress().equals(this.addrLoc))) {
                     if (inMessage.getTypeContenu() == typeContenu.HELLO) {
                         Hello helloSerialise = (Hello) inMessage;
                         System.out.println(this.nom + " : Je reçois un HELLO de " + packet.getAddress() + " ! ");
