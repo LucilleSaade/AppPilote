@@ -12,7 +12,7 @@ import com.interfaceApp.droneInterface.Screen;
 public class FacadeInterface {
 
     private static FacadeInterface singleton ;
-    private Screen screen;
+    private Screen drone;
     private Activity firstActivity;
     private FacadeCom com;
     private typeUser user;
@@ -20,6 +20,7 @@ public class FacadeInterface {
 
     private FacadeInterface(Activity activity) {
         firstActivity = activity;
+        this.drone = null;
     }
 
 
@@ -71,8 +72,11 @@ public class FacadeInterface {
 
     // A n'utiliser que dans le cas du drone !!!!!
     public void printTxt(String text) {
-        ((Screen) firstActivity).onNewMessage(text);
+      //  if(this.drone != null)
+            drone.onNewMessage(text);
     }
 
-
+    public void setDrone(Screen drone) {
+        this.drone = drone;
+    }
 }

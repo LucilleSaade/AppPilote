@@ -25,6 +25,7 @@ public class UDPReceiver extends Thread {
     private DatagramSocket server ;
     private byte[] bufIn;
     private typeUser nom;
+    private InetAddress addrLoc;
 
 
     /**
@@ -35,11 +36,12 @@ public class UDPReceiver extends Thread {
      * @param nom : String
      * @throws IOException
      */
-    public UDPReceiver(FacadeCom f, DatagramSocket soc, typeUser nom) throws IOException {
+    public UDPReceiver(FacadeCom f, DatagramSocket soc, typeUser nom, InetAddress addr) throws IOException {
         this.fcom = f;
         this.server = soc;
         bufIn = new byte[5000];
         this.nom = nom;
+        this.addrLoc = addr;
     }
 
 
@@ -64,22 +66,28 @@ public class UDPReceiver extends Thread {
                 AbstractMessage inMessage = (AbstractMessage) in.readObject();
 
 
-                if (inMessage.getTypeContenu() == typeContenu.HELLO){
-                    Hello helloSerialise = (Hello) inMessage;
-                    System.out.println(this.nom + " : Je reçois un HELLO ! " );
-                    this.fcom.processHello(packet.getAddress());
-                } else if (inMessage.getTypeContenu() == typeContenu.HELLOACK) {
-                    HelloAck helloackSerialise = (HelloAck) inMessage;
-                    System.out.println(this.nom + " : Je reçois HELLOACK ! " );
-                    this.fcom.processHelloAck(packet.getAddress());
-                } else if (inMessage.getTypeContenu() == typeContenu.GOODBYE) {
-                    Goodbye goodbyeSerialise = (Goodbye) inMessage;
-                    System.out.println(this.nom + " : Je reçois un GOODBYE ! ");
-                    this.fcom.processGoodbye();
-                } else if (inMessage.getTypeContenu() == typeContenu.INFORMATIONS) {
-                    Informations msg = (Informations) inMessage;
-                    System.out.println(this.nom + ":" + msg.toString());
-                    this.fcom.processInfo(msg);
+                if((packet.getAddress().equals(this.addrLoc))) {
+                    if (inMessage.getTypeContenu() == typeContenu.HELLO) {
+                        Hello helloSerialise = (Hello) inMessage;
+                        System.out.println(this.nom + " : Je reçois un HELLO de " + packet.getAddress() + " ! ");
+
+                        System.out.println(this.nom + " : Je suis " +this.addrLoc + " ! ");
+                        this.fcom.processHello(packet.getAddress());
+                    } else if (inMessage.getTypeContenu() == typeContenu.HELLOACK) {
+                        HelloAck helloackSerialise = (HelloAck) inMessage;
+                        System.out.println(this.nom + " : Je reçois HELLOACK de " + packet.getAddress() + " ! ");
+                        this.fcom.processHelloAck(packet.getAddress());
+                    } else if (inMessage.getTypeContenu() == typeContenu.GOODBYE) {
+                        Goodbye goodbyeSerialise = (Goodbye) inMessage;
+                        System.out.println(this.nom + " : Je reçois un GOODBYE de " + packet.getAddress() + "  ! ");
+                        this.fcom.processGoodbye();
+                    } else if (inMessage.getTypeContenu() == typeContenu.INFORMATIONS) {
+                        Informations msg = (Informations) inMessage;
+                        System.out.println(this.nom + ":" + msg.toString());
+                        this.fcom.processInfo(msg);
+                    }
+                } else {
+                System.out.println(this.nom + " : Je reçois mon propre Hello (" + packet.getAddress() + ") je ne le traite pas ! " + " ! ");
                 }
             }
         } catch (SocketException e) {

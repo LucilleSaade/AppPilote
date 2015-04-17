@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.interfaceApp.FacadeInterface;
 import com.interfaceApp.R;
 
 
@@ -19,10 +20,14 @@ public class Screen extends Activity {
 
     private TextView console;
     private String modifyText;
+    private FacadeInterface inter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drone);
+
+        this.inter = FacadeInterface.getInstance(this);
+        this.inter.setDrone(this);
 
         console = (TextView) findViewById(R.id.Console);
 

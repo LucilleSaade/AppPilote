@@ -8,6 +8,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.io.IOException;
 
+
 import static java.lang.Thread.*;
 
 /**
@@ -21,20 +22,32 @@ public class FacadeCom {
     private UDPReceiver receiver;
     private typeUser nom;
     private InetAddress addrDist;
+    private InetAddress addrLoc;
     private etatCom etat;
     private FacadeInterface inter;
 
 
-    public FacadeCom (typeUser nom, FacadeInterface inter) {
+    /**
+     * *****
+     * On recoit son propre Hello !!
+     * Gestion de l'envoie et reception des goodbye pas fait lors de l'appel retour
+     * ********
+     */
+
+
+    public FacadeCom(typeUser nom, FacadeInterface inter) {
         try {
             this.nom = nom;
             this.port = 1234;
             this.daSocket = new DatagramSocket(this.port);
             this.daSocket.setBroadcast(true);
             this.sender = new UDPSender(this.port, this.daSocket);
-            this.receiver = new UDPReceiver(this, this.daSocket, this.nom);
+            System.out.println("On enregistre l'adresse ipLocal");
+            this.addrLoc = IPAddress.getIp();
+            this.receiver = new UDPReceiver(this, this.daSocket, this.nom, this.addrLoc);
             this.receiver.start();
-            this.etat=etatCom.Deconnecte;
+            this.addrLoc = IPAddress.getIp();
+            this.etat = etatCom.Deconnecte;
             this.inter = inter;
         } catch (SocketException e) {
             e.printStackTrace();
@@ -45,17 +58,16 @@ public class FacadeCom {
 
     // pilote
     public void demandeConnect() {
-        this.etat=etatCom.EnConnexion;
-        while(this.etat==etatCom.EnConnexion) {
+        this.etat = etatCom.EnConnexion;
+        while (this.etat == etatCom.EnConnexion) {
 
-            ComParams params = new ComParams(this.sender,typeContenu.HELLO);
+            ComParams params = new ComParams(this, typeContenu.HELLO, false);
             UDPAsyncTask task = new UDPAsyncTask();
             task.execute(params);
 
             try {
                 currentThread().sleep(200);
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -65,76 +77,69 @@ public class FacadeCom {
 
     // pilote
     public void demandeDeconnect() {
-       int compteur=0;
-        this.etat=etatCom.Fin_Wait1;
-        while(this.etat==etatCom.Fin_Wait1 && compteur <3){
-            ComParams params = new ComParams(this.sender,typeContenu.GOODBYE);
+        int compteur = 0;
+        this.etat = etatCom.Fin_Wait1;
+        while (this.etat == etatCom.Fin_Wait1 && compteur < 3) {
+            ComParams params = new ComParams(this, typeContenu.GOODBYE, false);
             UDPAsyncTask task = new UDPAsyncTask();
             task.execute(params);
-            compteur ++;
+            compteur++;
             try {
                 currentThread().sleep(200);
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        this.etat=etatCom.Deconnecte;
+        this.etat = etatCom.Deconnecte;
         this.addrDist = null;
         this.sender.setAddrDist(null);
     }
 
     // drone normalement
-    public void processHello(InetAddress addr){
+    public void processHello(InetAddress addr) {
         this.addrDist = addr;
-        this.etat=etatCom.Connecte;
+        this.etat = etatCom.Connecte;
         this.sender.setAddrDist(this.addrDist);
-        ComParams params = new ComParams(this.sender,typeContenu.HELLOACK);
+        ComParams params = new ComParams(this, typeContenu.HELLOACK, true);
         UDPAsyncTask task = new UDPAsyncTask();
         task.execute(params);
         if (this.nom == typeUser.DRONE) {
-            this.inter.printTxt("Reception d'un hello");
+//            this.inter.printTxt("Reception d'un hello");
         }
     }
 
-    public void processHelloAck(InetAddress addr){
+    public void processHelloAck(InetAddress addr) {
         this.addrDist = addr;
-        this.etat=etatCom.Connecte;
+        this.etat = etatCom.Connecte;
         this.sender.setAddrDist(this.addrDist);
         // appeler fonction connexion réussi de l'interface
-        if (this.nom == typeUser.DRONE) {
-            this.inter.printTxt("Reception d'un hello ack");
-        }
     }
 
-    public void processGoodbye(){
-        if(this.etat==etatCom.Fin_Wait1){
-            this.etat=etatCom.Deconnecte;
+    public void processGoodbye() {
+        if (this.etat == etatCom.Fin_Wait1) {
+            this.etat = etatCom.Deconnecte;
             //fonction déconnexion réussie
-        }
-        else{
-            ComParams params = new ComParams(this.sender,typeContenu.GOODBYE);
+        } else {
+            ComParams params;
+            if (this.nom == typeUser.DRONE) {
+                params = new ComParams(this, typeContenu.GOODBYE, true);
+            } else {
+                params = new ComParams(this, typeContenu.GOODBYE, false);
+            }
             UDPAsyncTask task = new UDPAsyncTask();
             task.execute(params);
-            if (this.nom == typeUser.DRONE) {
-                this.inter.printTxt("Reception d'un goodbye");
-            }
-            this.etat=etatCom.Deconnecte;
-            if (this.nom == typeUser.DRONE) {
-                this.inter.printTxt("Envoie d'un goodbye");
-            }
+            this.etat = etatCom.Deconnecte;
         }
         this.addrDist = null;
         this.sender.setAddrDist(null);
     }
 
-    public void processInfo(Informations infos){
+    public void processInfo(Informations infos) {
     }
 
-    public void erreurArg() {
-        this.inter.printTxt("Mauvais params passés a UDPAsyncTAsk");
+    public void printDrone(String msg) {
+        this.inter.printTxt(msg);
     }
-
 
     public void setAddrDist(InetAddress addr) {
         this.addrDist = addr;
@@ -147,8 +152,6 @@ public class FacadeCom {
     public UDPSender getSender() {
         return sender;
     }
-
-
 
 
 }

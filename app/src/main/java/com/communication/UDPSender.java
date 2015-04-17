@@ -38,9 +38,6 @@ public class UDPSender {
         this.addrDist = null;
     }
 
-    /********
-     * On recoit son propre Hello !!
-     **********/
 
     /**
      * sendTo() : if the AbstractMessage is a Hello or a GoodBye, send on Broadcast the AbstractMessage after having serialized it
@@ -83,6 +80,8 @@ public class UDPSender {
         try {
             // Broadcast pour la connection
             address = InetAddress.getByName("255.255.255.255");
+
+            System.out.println("UDPSender  to " + address);
             sendTo((AbstractMessage) obj, address);
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,6 +96,8 @@ public class UDPSender {
         HelloAck obj = new HelloAck();
         try {
             // Broadcast pour la connection
+            System.out.println("UDPSender  to " + this.addrDist);
+
             sendTo((AbstractMessage) obj, this.addrDist);
         } catch (Exception e) {
             e.printStackTrace();

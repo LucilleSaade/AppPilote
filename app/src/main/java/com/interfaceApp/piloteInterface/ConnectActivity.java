@@ -29,8 +29,8 @@ public class ConnectActivity extends Activity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ConnectActivity.this, HomeActivity.class);
                 ConnectActivity.this.inter.demandeConnect();
+                Intent intent = new Intent(ConnectActivity.this, HomeActivity.class);
                 startActivity(intent);
             }
         });
