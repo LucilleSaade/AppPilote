@@ -30,8 +30,7 @@ public class FacadeCom {
 
     /**
      * *****
-     * On recoit son propre Hello !!
-     * Gestion de l'envoie et reception des goodbye pas fait lors de l'appel retour
+     * Gestion de l'envoie et reception des goodbye pas vérifiée
      * ********
      */
 
@@ -137,6 +136,7 @@ public class FacadeCom {
     }
 
     public void processInfo(Informations infos) {
+
     }
 
     public void printDrone(String msg) {
