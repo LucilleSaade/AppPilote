@@ -1,16 +1,16 @@
-package com.example.lucille.apppilote;
+package com.interfaceApp.piloteInterface;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.interfaceApp.R;
 
-public class MapActivity extends Activity {
+public class ImageActivity extends Activity {
 
     Button btn1 ;
     Button btn2 ;
@@ -20,7 +20,7 @@ public class MapActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        setContentView(R.layout.activity_image);
 
         btn1 = (Button) findViewById(R.id.button);
         btn2 = (Button) findViewById(R.id.button2);
@@ -31,7 +31,7 @@ public class MapActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapActivity.this, HomeActivity.class);
+                Intent intent = new Intent(ImageActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -39,21 +39,20 @@ public class MapActivity extends Activity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(ImageActivity.this, MapActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapActivity.this, ImageActivity.class);
-                startActivity(intent);
-                finish();
             }
         });
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapActivity.this, ConnectActivity.class);
+                Intent intent = new Intent(ImageActivity.this, ConnectActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -64,7 +63,7 @@ public class MapActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_map, menu);
+        getMenuInflater().inflate(R.menu.menu_image, menu);
         return true;
     }
 

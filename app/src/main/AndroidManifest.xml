@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.lucille.apppilote" >
+    package="com.interfaceApp" >
 
     <uses-sdk android:minSdkVersion="14" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION " />
 
     <application
         android:allowBackup="true"
@@ -15,22 +16,30 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".ConnectActivity"
-            android:label="@string/title_activity_connect" >
+            android:name="com.interfaceApp.Accueil"
+            android:label="@string/title_activity_image" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".HomeActivity"
+            android:name="com.interfaceApp.piloteInterface.ConnectActivity"
+            android:label="@string/title_activity_connect" >
+        </activity>
+        <activity
+            android:name="com.interfaceApp.piloteInterface.HomeActivity"
             android:label="HomeActivity" />
         <activity
-            android:name=".MapActivity"
+            android:name="com.interfaceApp.piloteInterface.MapActivity"
             android:label="@string/title_activity_map" >
         </activity>
         <activity
-            android:name=".ImageActivity"
+            android:name="com.interfaceApp.piloteInterface.ImageActivity"
+            android:label="@string/title_activity_image" >
+        </activity>
+        <activity
+            android:name="com.interfaceApp.droneInterface.Screen"
             android:label="@string/title_activity_image" >
         </activity>
     </application>

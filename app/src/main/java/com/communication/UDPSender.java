@@ -80,6 +80,8 @@ public class UDPSender {
         try {
             // Broadcast pour la connection
             address = InetAddress.getByName("255.255.255.255");
+
+            System.out.println("UDPSender  to " + address);
             sendTo((AbstractMessage) obj, address);
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,6 +96,8 @@ public class UDPSender {
         HelloAck obj = new HelloAck();
         try {
             // Broadcast pour la connection
+            System.out.println("UDPSender  to " + this.addrDist);
+
             sendTo((AbstractMessage) obj, this.addrDist);
         } catch (Exception e) {
             e.printStackTrace();
@@ -119,7 +123,6 @@ public class UDPSender {
             e.printStackTrace();
         }
     }
-
 
     public void setAddrDist(InetAddress addr) {
         this.addrDist = addr;

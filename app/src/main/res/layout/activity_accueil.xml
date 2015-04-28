@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/Accueil"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="40dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Bienvenue dans le controle du drone "
+        android:id="@+id/Bienvenue"
+        android:gravity="center" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:background="#ff141470" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Application Drone"
+        android:id="@+id/AppliDrone"
+        android:layout_gravity="center"
+        android:onClick="toDrone"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Application Pilote"
+        android:id="@+id/AppliPilote"
+        android:layout_gravity="center"
+        android:onClick="toPilote"/>
+</LinearLayout>

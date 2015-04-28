@@ -7,7 +7,6 @@ public enum etatCom {
     EnConnexion ,
     Connecte,
     Fin_Wait1,
-    
     Deconnecte
 }
 

@@ -6,7 +6,12 @@ package com.message;
 public class Informations extends AbstractMessage{
     //Mettre les objets de position,
 
-    public Informations(){
+    private double latitude;
+    private double longitude;
+
+    public Informations(double lat, double longi){
         this.type=typeContenu.INFORMATIONS;
+        this.latitude = lat;
+        this.longitude = longi;
     }
 }
