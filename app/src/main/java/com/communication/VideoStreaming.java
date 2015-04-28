@@ -7,7 +7,7 @@ import android.net.rtp.RtpStream;
 public class VideoStreaming {
     RtpStream rtps ;
 
-    VideoStreaming(boolean drone){
+    public VideoStreaming(boolean drone){
 
         if(drone){
             rtps.setMode(RtpStream.MODE_SEND_ONLY);
