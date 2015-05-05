@@ -136,7 +136,7 @@ public class FacadeCom {
     }
 
     public void processInfo(Informations infos) {
-
+        this.inter.processInfo(infos);
     }
 
     public void printDrone(String msg) {

@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.communication.FacadeCom;
 import com.interfaceApp.droneInterface.Screen;
+import com.message.Informations;
 
 /**
  * Created by lucille on 14/04/15.
@@ -66,6 +67,10 @@ public class FacadeInterface {
 
     public void demandeDeconnect() {
         this.com.demandeDeconnect();
+    }
+
+    public void processInfo(Informations info) {
+
     }
 
     /********************************
