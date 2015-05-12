@@ -8,10 +8,15 @@ public class Informations extends AbstractMessage{
 
     private double latitude;
     private double longitude;
+    private float battery_level;
 
     public Informations(double lat, double longi){
         this.type=typeContenu.INFORMATIONS;
         this.latitude = lat;
         this.longitude = longi;
     }
+
+
 }
+
+

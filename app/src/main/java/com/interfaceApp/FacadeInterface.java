@@ -18,6 +18,7 @@ public class FacadeInterface {
     private FacadeCom com;
     private typeUser user;
     private boolean drone;
+    private float batteryLevel ;
 
 
     private FacadeInterface(Activity activity) {
@@ -73,6 +74,10 @@ public class FacadeInterface {
 
     }
 
+    public void receiveBattery(float batteryLevel){
+        this.batteryLevel = batteryLevel ;
+    }
+
     /********************************
      *       PARTIE POUR DRONE      *
      ********************************/
@@ -86,4 +91,6 @@ public class FacadeInterface {
     public void setDrone(Screen droneAct) {
         this.droneActivity = droneAct;
     }
+
+    public void sendBattery(float batteryLevel){}
 }
