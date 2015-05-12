@@ -9,11 +9,15 @@ import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
 
 import com.interfaceApp.FacadeInterface;
+
+import com.communication.GPSTracker;
+import com.communication.FacadeCom;
+
 import com.interfaceApp.R;
 
 import java.util.concurrent.Executors;
@@ -31,13 +35,16 @@ public class Screen extends Activity {
     private String modifyText;
     private FacadeInterface inter;
     private Handler handler = new Handler();
+    private FacadeCom com;
+    private GPSTracker gps;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drone);
 
-        this.inter = FacadeInterface.getInstance(this);
-        this.inter.setDrone(this);
+        this.com = FacadeCom.getSingleton();
+
+        gps = new GPSTracker(this);
 
         console = (TextView) findViewById(R.id.Console);
 
@@ -137,5 +144,4 @@ public class Screen extends Activity {
             handler.removeCallbacks(updateBatteryTask);
         handler = null;
     }
-
 }

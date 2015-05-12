@@ -32,16 +32,18 @@ public class FacadeInterface {
      * @param activity
      */
     public void demarrageActivity(Class activity, typeUser user, boolean drone) {
-        Intent i = new Intent(firstActivity, activity);
-        firstActivity.startActivityForResult(i, 1);
         this.user = user;
         this.drone = drone;
-        this.com = new FacadeCom(user, this, this.drone);
+        if(drone) {
+            this.com = FacadeCom.getInstance(user, this, this.drone);
+        }
+        Intent i = new Intent(firstActivity, activity);
+        firstActivity.startActivityForResult(i, 1);
     }
 
 
     /**
-     * Permet de recuperer l'instance de FacadeView
+     * Permet de recuperer l'instance de FacadeInterface
      * @return singleton
      */
     public static FacadeInterface getInstance (Activity activity) {
