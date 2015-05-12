@@ -1,5 +1,6 @@
 package com.interfaceApp.piloteInterface;
 
+import android.support.v4.app.FragmentActivity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.*;
@@ -29,7 +30,7 @@ public class ConnectActivity extends Activity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConnectActivity.this.inter.demandeConnect();
+               // ConnectActivity.this.inter.demandeConnect();
                 Intent intent = new Intent(ConnectActivity.this, HomeActivity.class);
                 startActivity(intent);
             }
