@@ -1,7 +1,6 @@
 package com.interfaceApp.droneInterface;
 
 import android.app.Activity;
-import android.content.*;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,7 +10,6 @@ import android.os.Handler;
 import android.view.Gravity;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Intent;
 
 import com.interfaceApp.FacadeInterface;
 
