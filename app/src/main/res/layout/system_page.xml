@@ -65,6 +65,24 @@
                 android:text="Page System !!"
                 android:id="@+id/textView3"
                 android:layout_gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Niveau batterie"
+                android:id="@+id/textView4"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0%"
+                android:id="@+id/batteryLevel"
+                android:layout_marginTop="70dp"
+                android:layout_marginLeft="30dp" />
         </FrameLayout>
 
         <!--

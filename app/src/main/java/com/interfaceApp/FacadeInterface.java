@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.communication.FacadeCom;
 import com.interfaceApp.droneInterface.Screen;
+import com.message.Informations;
 
 /**
  * Created by lucille on 14/04/15.
@@ -17,6 +18,7 @@ public class FacadeInterface {
     private FacadeCom com;
     private typeUser user;
     private boolean drone;
+    private float batteryLevel ;
 
 
     private FacadeInterface(Activity activity) {
@@ -30,16 +32,18 @@ public class FacadeInterface {
      * @param activity
      */
     public void demarrageActivity(Class activity, typeUser user, boolean drone) {
-        Intent i = new Intent(firstActivity, activity);
-        firstActivity.startActivityForResult(i, 1);
         this.user = user;
         this.drone = drone;
-        this.com = new FacadeCom(user, this, this.drone);
+        if(drone) {
+            this.com = FacadeCom.getInstance(user, this, this.drone);
+        }
+        Intent i = new Intent(firstActivity, activity);
+        firstActivity.startActivityForResult(i, 1);
     }
 
 
     /**
-     * Permet de recuperer l'instance de FacadeView
+     * Permet de recuperer l'instance de FacadeInterface
      * @return singleton
      */
     public static FacadeInterface getInstance (Activity activity) {
@@ -68,6 +72,14 @@ public class FacadeInterface {
         this.com.demandeDeconnect();
     }
 
+    public void processInfo(Informations info) {
+
+    }
+
+    public void receiveBattery(float batteryLevel){
+        this.batteryLevel = batteryLevel ;
+    }
+
     /********************************
      *       PARTIE POUR DRONE      *
      ********************************/
@@ -81,4 +93,6 @@ public class FacadeInterface {
     public void setDrone(Screen droneAct) {
         this.droneActivity = droneAct;
     }
+
+    public void sendBattery(float batteryLevel){}
 }

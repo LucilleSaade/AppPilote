@@ -22,6 +22,8 @@ public class GPSTracker extends Service implements LocationListener {
 
     private final Context mContext;
 
+    private FacadeCom com;
+
     // flag for GPS status
     boolean isGPSEnabled = false;
 
@@ -47,6 +49,10 @@ public class GPSTracker extends Service implements LocationListener {
     public GPSTracker(Context context) {
         this.mContext = context;
         getLocation();
+        this.com=FacadeCom.getSingleton();
+        Log.d("Lucille","Service GPS lance");
+        this.com.printDrone("Yeah GPS service launch");
+
     }
 
     public Location getLocation() {

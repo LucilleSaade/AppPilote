@@ -1,5 +1,7 @@
 package com.communication;
 
+import android.app.Activity;
+
 import com.interfaceApp.FacadeInterface;
 import com.interfaceApp.typeUser;
 import com.message.*;
@@ -15,6 +17,8 @@ import static java.lang.Thread.*;
  * Created by lucille on 24/03/15.
  */
 public class FacadeCom {
+
+    private static FacadeCom singleton ;
 
     private DatagramSocket daSocket;
     private int port;
@@ -56,6 +60,24 @@ public class FacadeCom {
             e.printStackTrace();
         }
     }
+
+
+
+    /**
+     * Permet de recuperer l'instance de FacadeInterface
+     * @return singleton
+     */
+    public static FacadeCom getInstance(typeUser nom, FacadeInterface inter, boolean drone) {
+        if (singleton == null) {
+            singleton = new FacadeCom(nom, inter, drone) ;
+        }
+        return singleton ;
+    }
+
+    public static FacadeCom getSingleton() {
+        return singleton ;
+    }
+
 
     // pilote
     public void demandeConnect() {
@@ -136,7 +158,7 @@ public class FacadeCom {
     }
 
     public void processInfo(Informations infos) {
-
+        this.inter.processInfo(infos);
     }
 
     public void printDrone(String msg) {
