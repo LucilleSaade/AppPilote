@@ -8,5 +8,8 @@ public enum typeContenu {
     HELLOACK,
     GOODBYE,
     INFORMATIONS,
+    PHOTO,
+    DebutPhoto,
+    FinPhoto,
     PRINT
 }

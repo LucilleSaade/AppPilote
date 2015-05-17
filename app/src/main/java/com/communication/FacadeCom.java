@@ -36,6 +36,7 @@ public class FacadeCom {
     private InetAddress addrLoc;
     private etatCom etat;
     private static Informations info;
+    private static Photo img;
     private FacadeInterface inter;
     private static boolean drone;
     private Handler infoHandler = new Handler(Looper.getMainLooper());
@@ -203,7 +204,27 @@ public class FacadeCom {
         });
         // ...
     }
+    //TODO : faire envoi et réception du message début photo et fin photo
+    public void sendPhoto(){
 
+    }
+
+    public void sendDebutPhoto(){
+
+    }
+
+    public void sendFinPhoto(){
+
+    }
+    public void processDebutPhoto(){
+
+    }
+    public void processFinPhoto(){
+
+    }
+    public void processPhoto(Photo img){
+
+    }
     public void processInfo(Informations infos) {
         this.inter.processInfo(infos);
     }

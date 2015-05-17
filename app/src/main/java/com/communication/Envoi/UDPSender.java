@@ -124,6 +124,36 @@ public class UDPSender {
         }
     }
 
+
+    public void sendPhoto(Photo obj) {
+        try {
+            System.out.println("Envoi d'une photo à l'autre");
+            sendTo(obj, this.addrDist);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void sendDebutPhoto(DebutPhoto obj) {
+        try {
+            System.out.println("Envoi d'un message à l'autre");
+            sendTo(obj, this.addrDist);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void sendFinPhoto(FinPhoto obj) {
+        try {
+            System.out.println("Envoi d'un message à l'autre");
+            sendTo(obj, this.addrDist);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setAddrDist(InetAddress addr) {
         this.addrDist = addr;
     }

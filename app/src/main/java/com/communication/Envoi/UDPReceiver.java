@@ -84,6 +84,16 @@ public class UDPReceiver extends Thread {
                         Informations msg = (Informations) inMessage;
                         System.out.println(this.nom + ":" + msg.toString());
                         this.fcom.processInfo(msg);
+                    } else if (inMessage.getTypeContenu()==typeContenu.PHOTO){
+                        Photo img = (Photo) inMessage;
+                        System.out.println(this.nom + " : Je reçois une photo de " + packet.getAddress() + "  ! ");
+                        this.fcom.processPhoto(img);
+                    } else if (inMessage.getTypeContenu() == typeContenu.DebutPhoto){
+                        System.out.println(this.nom + " : Je reçois un DébutPhoto de " + packet.getAddress() + "  ! ");
+                        this.fcom.processDebutPhoto();
+                    } else if (inMessage.getTypeContenu() == typeContenu.FinPhoto){
+                        System.out.println(this.nom + " : Je reçois un fin photo de " + packet.getAddress() + "  ! ");
+                        this.fcom.processFinPhoto();
                     }
                 } else {
                    System.out.println(this.nom + " : Je reçois mon propre Hello (" + packet.getAddress() + ") je ne le traite pas ! " + " ! ");
