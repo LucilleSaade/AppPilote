@@ -1,8 +1,8 @@
-package com.communication;
+package com.communication.Envoi;
 
 import android.os.AsyncTask;
 
-import com.interfaceApp.FacadeInterface;
+import com.communication.FacadeCom;
 import com.message.typeContenu;
 
 /**
@@ -17,7 +17,7 @@ public class UDPAsyncTask extends AsyncTask<ComParams, String, String> {
     // On peut y mettre plusieurs params dans la fonction de base mais dans notre cas il faut en mettre un seul
     protected String doInBackground(ComParams... params) {
         int i;
-        String result = "N'est pas passé dans le switch d'envoi";
+        String result = "!!!!!! N'est pas passé dans le switch d'envoi";
 
         for (i = 0; i < params.length; i++) {
 
@@ -25,26 +25,30 @@ public class UDPAsyncTask extends AsyncTask<ComParams, String, String> {
             UDPSender send = params[i].getSender();
             this.com =  params[i].getCom();
             this.drone = params[i].isDrone();
+            String msg = params[i].getAffiche();
 
             switch (cont) {
                 case HELLO:
                     send.connecter();
-                    result = "Envoie de Hello";
+                    result = "** Envoi de Hello";
                     break;
                 case HELLOACK:
                     send.envoiHelloAck();
-                    result = "Envoie de HelloAck";
+                    result = "** Envoi de HelloAck";
                     break;
                 case GOODBYE:
                     send.envoiGoodbye();
-                    result = "Envoie de Goodbye";
+                    result = "** Envoi de Goodbye";
                     break;
                 case INFORMATIONS:
                     send.sendMessage(params[i].getInfo());
-                    result = "Envoie d'information";
+                    result = "** Envoi d'information, Lat. : " + params[i].getInfo().getLatitude() + ", Long. :" + params[i].getInfo().getLongitude() + ", bat. :" + params[i].getInfo().getBattery_level();
+                    break;
+                case PRINT:
+                    result = "** " + msg;
                     break;
                 default:
-                    result = "Erreur d'envoi, mauvais typeContenu";
+                    result = "!!!!!! Erreur d'envoi, mauvais typeContenu";
                     break;
             }
         }
@@ -54,8 +58,9 @@ public class UDPAsyncTask extends AsyncTask<ComParams, String, String> {
 
     public void onPostExecute(String result) {
         if (drone) {
-            this.com.printDrone(result);
-        }
+            this.com.getInter().printTxt(result);
+        } else
+            System.out.println("Youhou");
     }
 
 }
