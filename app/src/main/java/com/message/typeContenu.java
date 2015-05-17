@@ -7,5 +7,6 @@ public enum typeContenu {
     HELLO,
     HELLOACK,
     GOODBYE,
-    INFORMATIONS
+    INFORMATIONS,
+    PRINT
 }

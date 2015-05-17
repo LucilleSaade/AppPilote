@@ -1,8 +1,14 @@
 package com.communication;
 
-import android.app.Activity;
+import android.os.Handler;
+import android.os.Looper;
 
+import com.communication.Envoi.ComParams;
+import com.communication.Envoi.UDPAsyncTask;
+import com.communication.Envoi.UDPReceiver;
+import com.communication.Envoi.UDPSender;
 import com.interfaceApp.FacadeInterface;
+import com.interfaceApp.droneInterface.Screen;
 import com.interfaceApp.typeUser;
 import com.message.*;
 import java.net.DatagramSocket;
@@ -24,13 +30,16 @@ public class FacadeCom {
     private int port;
     private UDPSender sender;
     private UDPReceiver receiver;
+    private Screen screen;
     private typeUser nom;
     private InetAddress addrDist;
     private InetAddress addrLoc;
     private etatCom etat;
+    private static Informations info;
     private FacadeInterface inter;
-    private boolean drone;
-
+    private static boolean drone;
+    private Handler infoHandler = new Handler(Looper.getMainLooper());
+    private Handler helloHandler = new Handler(Looper.getMainLooper());
 
     /**
      * *****
@@ -50,8 +59,9 @@ public class FacadeCom {
             this.addrLoc = IPAddress.getIp();
             this.receiver = new UDPReceiver(this, this.daSocket, this.nom, this.addrLoc);
             this.receiver.start();
-            this.addrLoc = IPAddress.getIp();
+            //this.addrLoc = IPAddress.getIp();
             this.etat = etatCom.Deconnecte;
+            this.info = new Informations(0.0,0.0,0);
             this.inter = inter;
             this.drone = drone;
         } catch (SocketException e) {
@@ -87,7 +97,7 @@ public class FacadeCom {
             ComParams params = new ComParams(this, typeContenu.HELLO, this.drone);
             UDPAsyncTask task = new UDPAsyncTask();
             task.execute(params);
-
+            System.out.println("Envoi hello");
             try {
                 currentThread().sleep(1000);
             } catch (Exception e) {
@@ -123,13 +133,38 @@ public class FacadeCom {
         this.addrDist = addr;
         this.etat = etatCom.Connecte;
         this.sender.setAddrDist(this.addrDist);
-        ComParams params = new ComParams(this, typeContenu.HELLOACK, this.drone);
-        UDPAsyncTask task = new UDPAsyncTask();
-        task.execute(params);
+
+        helloHandler.post(new Runnable() {
+            private FacadeCom fcom;
+            public void run() {
+                this.fcom = FacadeCom.getSingleton();
+                if (this.fcom.getNom() == typeUser.DRONE) {
+                    ComParams params2 = new ComParams(this.fcom, this.fcom.isDrone(), "Reception d'un hello");
+                    UDPAsyncTask task2 = new UDPAsyncTask();
+                    task2.execute(params2);
+                }
+            }
+        });
+
+
+        helloHandler.post(new Runnable() {
+            private FacadeCom fcom;
+            public void run() {
+                this.fcom = FacadeCom.getSingleton();
+                ComParams params = new ComParams(this.fcom, this.fcom.isDrone(), "Envoi d'un hello ack");
+                UDPAsyncTask task = new UDPAsyncTask();
+                task.execute(params);
+            }
+        });
+
+        this.sender.envoiHelloAck();
+
+
         if (this.nom == typeUser.DRONE) {
-//            this.inter.printTxt("Reception d'un hello");
+            this.screen.onConnectedState();
         }
     }
+
 
     public void processHelloAck(InetAddress addr) {
         this.addrDist = addr;
@@ -157,13 +192,36 @@ public class FacadeCom {
         this.sender.setAddrDist(null);
     }
 
+    public void sendInfo() {
+
+        infoHandler.post(new Runnable() {
+            public void run() {
+                ComParams params = new ComParams(FacadeCom.getSingleton(),typeContenu.INFORMATIONS, FacadeCom.info, FacadeCom.drone);
+                UDPAsyncTask task = new UDPAsyncTask();
+                task.execute(params);
+            }
+        });
+        // ...
+    }
+
     public void processInfo(Informations infos) {
         this.inter.processInfo(infos);
     }
 
     public void printDrone(String msg) {
-        this.inter.printTxt(msg);
+        ComParams params = new ComParams(this, this.drone, msg);
+        UDPAsyncTask task = new UDPAsyncTask();
+        task.execute(params);
     }
+
+
+
+    /**
+     * ***********************************************************
+     *                      Getter et setter
+     * ***********************************************************
+     * */
+
 
     public void setAddrDist(InetAddress addr) {
         this.addrDist = addr;
@@ -178,4 +236,31 @@ public class FacadeCom {
     }
 
 
+    public void setBattery(float battery) {
+        this.info.setBattery_level(battery);
+    }
+
+    public void setLong(double longitude) {
+        this.info.setLongitude(longitude);
+    }
+
+    public void setLat(double latitude) {
+        this.info.setLatitude(latitude);
+    }
+
+    public void setScreen(Screen screen) {
+        this.screen = screen;
+    }
+
+    public FacadeInterface getInter() {
+        return inter;
+    }
+
+    public typeUser getNom() {
+        return nom;
+    }
+
+    public static boolean isDrone() {
+        return drone;
+    }
 }

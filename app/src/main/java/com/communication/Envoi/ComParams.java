@@ -1,5 +1,6 @@
-package com.communication;
+package com.communication.Envoi;
 
+import com.communication.FacadeCom;
 import com.message.Informations;
 import com.message.typeContenu;
 
@@ -12,6 +13,7 @@ public class ComParams {
     private typeContenu contenu;
     private Informations info;
     private FacadeCom com;
+    private String affiche;
     private boolean drone;
 
 
@@ -21,7 +23,9 @@ public class ComParams {
         this.contenu = cont;
         this.info = info;
         this.drone = dr;
+        this.affiche="";
     }
+
 
     public ComParams(FacadeCom com, typeContenu cont, boolean dr) {
         this.com = com;
@@ -31,6 +35,20 @@ public class ComParams {
         this.drone = dr;
     }
 
+
+
+    public ComParams(FacadeCom com, boolean dr, String msg) {
+        this.com = com;
+        this.sender = this.com.getSender();
+        this.contenu = typeContenu.PRINT;
+        this.info = null;
+        this.drone = dr;
+        this.affiche = msg;
+    }
+
+    public String getAffiche() {
+        return affiche;
+    }
 
     public UDPSender getSender() {
         return sender;

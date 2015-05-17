@@ -34,9 +34,9 @@ public class FacadeInterface {
     public void demarrageActivity(Class activity, typeUser user, boolean drone) {
         this.user = user;
         this.drone = drone;
-        if(drone) {
+       // if(drone) {
             this.com = FacadeCom.getInstance(user, this, this.drone);
-        }
+        //}
         Intent i = new Intent(firstActivity, activity);
         firstActivity.startActivityForResult(i, 1);
     }
@@ -79,14 +79,13 @@ public class FacadeInterface {
     public void receiveBattery(float batteryLevel){
         this.batteryLevel = batteryLevel ;
     }
-
     /********************************
      *       PARTIE POUR DRONE      *
      ********************************/
 
     // A n'utiliser que dans le cas du drone !!!!!
     public void printTxt(String text) {
-      //  if(this.drone)
+        if(this.drone)
             droneActivity.onNewMessage(text);
     }
 
@@ -94,5 +93,14 @@ public class FacadeInterface {
         this.droneActivity = droneAct;
     }
 
-    public void sendBattery(float batteryLevel){}
+    public void setDroneActivity(Screen droneActivity) {
+        this.droneActivity = droneActivity;
+    }
+
+    public void sendBattery(float batteryLevel){
+
+    }
+
+
+
 }

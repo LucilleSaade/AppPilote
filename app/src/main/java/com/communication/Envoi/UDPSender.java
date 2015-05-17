@@ -1,4 +1,4 @@
-package com.communication;
+package com.communication.Envoi;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutput;

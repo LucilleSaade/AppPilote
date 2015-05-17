@@ -1,4 +1,4 @@
-package com.communication;
+package com.communication.Envoi;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -9,6 +9,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
+import com.communication.FacadeCom;
 import com.interfaceApp.typeUser;
 import com.message.*;
 

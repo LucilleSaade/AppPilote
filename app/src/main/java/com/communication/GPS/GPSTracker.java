@@ -1,24 +1,26 @@
-package com.communication;
+package com.communication.GPS;
 
 
-import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
-import android.provider.Settings;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
+
+import com.communication.FacadeCom;
 
 
 /**
  * Created by lucille on 18/04/15.
  */
-public class GPSTracker extends Service implements LocationListener {
+public class GPSTracker extends Thread implements LocationListener {
 
     private final Context mContext;
 
@@ -46,19 +48,44 @@ public class GPSTracker extends Service implements LocationListener {
     // Declaring a Location Manager
     protected LocationManager locationManager;
 
+    private Looper looper;
+
     public GPSTracker(Context context) {
         this.mContext = context;
-        getLocation();
         this.com=FacadeCom.getSingleton();
         Log.d("Lucille","Service GPS lance");
         this.com.printDrone("Yeah GPS service launch");
+        Log.d("Lucille","Service GPS ecriture");
+
 
     }
 
+
+    public void run() {
+
+        this.looper.prepare();
+
+        getLocation();
+
+           try {
+               currentThread().sleep(1000);
+               onLocationChanged(this.location);
+
+           } catch (Exception e) {
+                e.printStackTrace();
+           }
+
+        this.looper.loop();
+
+    }
+
+
+
+
     public Location getLocation() {
+
         try {
-            locationManager = (LocationManager) mContext
-                    .getSystemService(LOCATION_SERVICE);
+            locationManager = (LocationManager) mContext.getSystemService(mContext.LOCATION_SERVICE);
 
             // getting GPS status
             isGPSEnabled = locationManager
@@ -85,6 +112,8 @@ public class GPSTracker extends Service implements LocationListener {
                         if (location != null) {
                             latitude = location.getLatitude();
                             longitude = location.getLongitude();
+                            this.com.setLat(latitude);
+                            this.com.setLong(longitude);
                         }
                     }
                 }
@@ -103,6 +132,8 @@ public class GPSTracker extends Service implements LocationListener {
                             if (location != null) {
                                 latitude = location.getLatitude();
                                 longitude = location.getLongitude();
+                                this.com.setLat(latitude);
+                                this.com.setLong(longitude);
                             }
                         }
                     }
@@ -132,6 +163,7 @@ public class GPSTracker extends Service implements LocationListener {
     public double getLatitude(){
         if(location != null){
             latitude = location.getLatitude();
+            this.com.setLat(latitude);
         }
 
         // return latitude
@@ -144,10 +176,15 @@ public class GPSTracker extends Service implements LocationListener {
     public double getLongitude(){
         if(location != null){
             longitude = location.getLongitude();
+            this.com.setLong(longitude);
         }
 
         // return longitude
         return longitude;
+    }
+
+    public Looper getLooper() {
+        return looper;
     }
 
     /**
@@ -162,7 +199,10 @@ public class GPSTracker extends Service implements LocationListener {
     public void onLocationChanged(Location location) {
         this.longitude = location.getLongitude();
         this.latitude = location.getLatitude();
+        this.com.setLat(latitude);
+        this.com.setLong(longitude);
         System.out.println("LocationChangedGPS LAT: "+ this.latitude +" longi: "+ this.longitude);
+        this.com.sendInfo();
     }
 
     @Override
@@ -177,7 +217,7 @@ public class GPSTracker extends Service implements LocationListener {
     public void onStatusChanged(String provider, int status, Bundle extras) {
     }
 
-    @Override
+
     public IBinder onBind(Intent arg0) {
         return null;
     }
