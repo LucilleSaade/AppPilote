@@ -2,6 +2,7 @@ package com.communication.Envoi;
 
 import com.communication.FacadeCom;
 import com.message.Informations;
+import com.message.Photo;
 import com.message.typeContenu;
 
 /**
@@ -12,6 +13,7 @@ public class ComParams {
     private UDPSender sender;
     private typeContenu contenu;
     private Informations info;
+    private Photo photo;
     private FacadeCom com;
     private String affiche;
     private boolean drone;
@@ -46,6 +48,15 @@ public class ComParams {
         this.affiche = msg;
     }
 
+    public ComParams(FacadeCom com, typeContenu type, Photo photo, boolean dr) {
+        this.com = com;
+        this.sender = this.com.getSender();
+        this.contenu = typeContenu.PHOTO;
+        this.info = null;
+        this.drone = dr;
+        this.affiche = "";
+    }
+
     public String getAffiche() {
         return affiche;
     }
@@ -68,5 +79,13 @@ public class ComParams {
 
     public boolean isDrone() {
         return drone;
+    }
+
+    public Photo getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
     }
 }

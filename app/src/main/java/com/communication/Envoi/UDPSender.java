@@ -24,6 +24,7 @@ public class UDPSender {
     private InetAddress addrDist;
 
 
+
     /**
      * UDPReceiver constructor :
      * instantiate the hostname field, the bos field (ByteArrayOutputStream), the soc field and the destPort field.
@@ -135,7 +136,8 @@ public class UDPSender {
     }
 
 
-    public void sendDebutPhoto(DebutPhoto obj) {
+    public void envoiDebutPhoto() {
+        DebutPhoto obj = new DebutPhoto();
         try {
             System.out.println("Envoi d'un message à l'autre");
             sendTo(obj, this.addrDist);
@@ -145,7 +147,8 @@ public class UDPSender {
     }
 
 
-    public void sendFinPhoto(FinPhoto obj) {
+    public void envoiFinPhoto() {
+        FinPhoto obj = new FinPhoto();
         try {
             System.out.println("Envoi d'un message à l'autre");
             sendTo(obj, this.addrDist);

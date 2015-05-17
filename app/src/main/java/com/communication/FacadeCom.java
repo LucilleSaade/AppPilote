@@ -206,21 +206,23 @@ public class FacadeCom {
     }
     //TODO : faire envoi et réception du message début photo et fin photo
     public void sendPhoto(){
-
+        ComParams params = new ComParams(this, typeContenu.PHOTO, img, this.drone);
+        UDPAsyncTask task = new UDPAsyncTask();
+        task.execute(params);
     }
 
     public void sendDebutPhoto(){
-
+        this.sender.envoiDebutPhoto();
     }
 
     public void sendFinPhoto(){
-
+        this.sender.envoiFinPhoto();
     }
     public void processDebutPhoto(){
-
+        //Commencer le début de la prise de vue et de l'envoi de photos
     }
     public void processFinPhoto(){
-
+        //Changer de mode et arrêter prévisualisation et envoi
     }
     public void processPhoto(Photo img){
 

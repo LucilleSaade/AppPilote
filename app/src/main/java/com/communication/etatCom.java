@@ -9,4 +9,3 @@ public enum etatCom {
     Fin_Wait1,
     Deconnecte
 }
-

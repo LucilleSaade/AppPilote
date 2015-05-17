@@ -4,10 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.hardware.Camera;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,11 +23,13 @@ import com.communication.FacadeCom;
 
 import com.interfaceApp.R;
 
+import java.io.IOException;
+
 
 /**
  * Created by lucille on 14/04/15.
  */
-public class Screen extends Activity {
+public class Screen extends Activity implements SurfaceHolder.Callback{
 
 
     private TextView console;
@@ -33,6 +40,10 @@ public class Screen extends Activity {
     private boolean connected;
     private static FacadeCom com;
     private GPSTracker gps;
+    private Camera camera = null;
+    private ImageView imageView;
+    private Handler handlerCam = new Handler();
+    private Bitmap image;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +85,15 @@ public class Screen extends Activity {
         for (i=0; i<100; i++)
             onNewMessage("Les petits chou");
        */
+       /* imageView = (ImageView) findViewById(R.id.imageView);
 
+        SurfaceView surface = (SurfaceView)findViewById(R.id.surface_view);
+
+        SurfaceHolder holder = surface.getHolder();
+        holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
+        // On déclare que la classe actuelle gérera les callbacks
+        holder.addCallback(this);*/
 
     }
 
@@ -178,6 +197,82 @@ public class Screen extends Activity {
 
         this.gps.getLooper().quit();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try{
+            camera = Camera.open();
+
+            handlerCam.removeCallbacks(takePictureTask);
+            handlerCam.postDelayed(takePictureTask, 1600);
+
+        }catch(Exception e){
+            e.printStackTrace();
+            // System.out.println("ouverture de la camera impossible");
+
+        }
+
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handlerCam.removeCallbacks(takePictureTask);
+        if (camera != null) {
+            camera.stopPreview();
+            camera.release();
+            camera = null;
+        }
+    }
+
+    private Runnable takePictureTask = new Runnable() {
+        public void run() {
+            if(camera!=null){
+                takePicture();
+                handlerCam.postDelayed(this, 1600);
+            }
+
+        }
+    };
+
+    private void takePicture() {
+
+        // Sera lancée une fois l'image traitée, on enregistre l'image sur le support externe
+        Camera.PictureCallback jpegCallback = new Camera.PictureCallback() {
+            public void onPictureTaken(byte[] data, Camera camera) {
+                camera.startPreview();
+                /*image = BitmapFactory.decodeByteArray(data, 0, data.length);
+               imageView.setImageBitmap(image);*/
+
+
+            }
+        };
+        camera.takePicture(null, null, jpegCallback);
+    }
+
+    // Se déclenche quand la surface est créée
+    public void surfaceCreated(SurfaceHolder holder) {
+        try {
+            camera.setPreviewDisplay(holder);
+            camera.startPreview();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Se déclenche quand la surface change de dimensions ou de format
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    }
+
+    // Se déclenche quand la surface est détruite
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        if(camera!=null){
+            camera.stopPreview();
+        }
+    }
+
 
     public static FacadeCom getCom() {
         return com;
