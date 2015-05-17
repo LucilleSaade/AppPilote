@@ -30,7 +30,7 @@ import java.io.IOException;
  * Created by lucille on 14/04/15.
  */
 public class Screen extends Activity implements SurfaceHolder.Callback{
-
+//TODO : gérer les envois etc des photos suivant le mode (dans la facade)
 
     private TextView console;
     private String modifyText;
