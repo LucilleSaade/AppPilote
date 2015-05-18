@@ -36,7 +36,6 @@ public class FacadeCom {
     private InetAddress addrLoc;
     private etatCom etat;
     private static Informations info;
-    private static Photo img;
     private FacadeInterface inter;
     private static boolean drone;
     private Handler infoHandler = new Handler(Looper.getMainLooper());
@@ -44,7 +43,7 @@ public class FacadeCom {
 
     /**
      * *****
-     * Gestion de l'envoie et reception des goodbye pas vérifiée
+     * Gestion de l'envoi et reception des goodbye pas vérifiée
      * ********
      */
 
@@ -204,9 +203,17 @@ public class FacadeCom {
         });
         // ...
     }
-    //TODO : faire envoi et réception du message début photo et fin photo
-    public void sendPhoto(){
-        ComParams params = new ComParams(this, typeContenu.PHOTO, img, this.drone);
+
+
+
+    /**
+     * ***********************************************************
+     *                      Gestion photo
+     * ***********************************************************
+     * */
+    public void sendPhoto(byte [] data){
+        Photo msg = new Photo(data);
+        ComParams params = new ComParams(this, typeContenu.PHOTO, msg, this.drone);
         UDPAsyncTask task = new UDPAsyncTask();
         task.execute(params);
     }
@@ -218,15 +225,21 @@ public class FacadeCom {
     public void sendFinPhoto(){
         this.sender.envoiFinPhoto();
     }
+
     public void processDebutPhoto(){
         //Commencer le début de la prise de vue et de l'envoi de photos
+        this.inter.processDebutPhoto();
     }
+
     public void processFinPhoto(){
         //Changer de mode et arrêter prévisualisation et envoi
+        this.inter.processFinPhoto();
     }
-    public void processPhoto(Photo img){
 
+    public void processPhoto(Photo img){
+        inter.recupererPhoto(img.getImage());
     }
+
     public void processInfo(Informations infos) {
         this.inter.processInfo(infos);
     }

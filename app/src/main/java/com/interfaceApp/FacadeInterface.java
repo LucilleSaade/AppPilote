@@ -2,9 +2,12 @@ package com.interfaceApp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.communication.FacadeCom;
 import com.interfaceApp.droneInterface.Screen;
+import com.interfaceApp.piloteInterface.ImageActivity;
 import com.message.Informations;
 
 /**
@@ -19,6 +22,7 @@ public class FacadeInterface {
     private typeUser user;
     private boolean drone;
     private float batteryLevel ;
+    private Bitmap image;
 
 
     private FacadeInterface(Activity activity) {
@@ -75,6 +79,20 @@ public class FacadeInterface {
     public void processInfo(Informations info) {
 
     }
+    public void recupererPhoto(byte [] data){
+        image = BitmapFactory.decodeByteArray(data, 0, data.length);
+        if(firstActivity instanceof ImageActivity){
+            ((ImageActivity)firstActivity).afficherImage(image);
+        }
+
+    }
+
+    public void sendDepartPhotos(){
+        this.com.sendDebutPhoto();
+    }
+    public void sendFinPhotos(){
+        this.com.sendFinPhoto();
+    }
 
     public void receiveBattery(float batteryLevel){
         this.batteryLevel = batteryLevel ;
@@ -101,6 +119,13 @@ public class FacadeInterface {
 
     }
 
+    public void processDebutPhoto(){
+        //Commencer le début de la prise de vue et de l'envoi de photos
+       this.droneActivity.lancerPhoto();
+    }
 
-
+    public void processFinPhoto(){
+        //Changer de mode et arrêter prévisualisation et envoi
+        this.droneActivity.arretPhoto();
+    }
 }

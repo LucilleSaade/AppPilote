@@ -6,7 +6,15 @@ package com.message;
 public class Photo extends AbstractMessage {
     private byte[] image;
     public Photo(byte[]data){
-        this.image=data;
+        this.setImage(data);
         this.type=typeContenu.PHOTO;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }
