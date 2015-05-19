@@ -14,7 +14,7 @@ import android.view.SurfaceView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.hardware.Camera.Parameters ;
-
+import android.hardware.Camera.Size ;
 import com.interfaceApp.FacadeInterface;
 
 import com.communication.GPS.GPSTracker;
@@ -23,6 +23,7 @@ import com.communication.FacadeCom;
 import com.interfaceApp.R;
 
 import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -199,9 +200,23 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
             System.out.println("fonction on Resume");
         }*/
         try{
-            camera.getParameters().setJpegQuality(10);
-            camera.setParameters(camera.getParameters());
+
             camera = Camera.open();
+
+            Camera.Parameters params = camera.getParameters();
+           // List<Camera.Size> lol = params.getSupportedPictureSizes();
+
+        /*    for (int i=0;i<lol.size();i++){
+                result = (Size) lol.get(i);
+                Log.i("PictureSize", "Supported Size. Width: " + result.width + "height : " + result.height);
+            }*/
+
+           // camera.Size() lol2 = new camera.Size() ;
+
+           // System.out.println(lol);
+           /* params.setJpegQuality(5);
+            params.setPictureSize(100,50);
+           // camera.setParameters(params);
 
            /* handlerCam.removeCallbacks(takePictureTask);
             handlerCam.postDelayed(takePictureTask, 1600);*/
