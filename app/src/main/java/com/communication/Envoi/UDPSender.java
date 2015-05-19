@@ -33,7 +33,7 @@ public class UDPSender {
      * @throws java.net.SocketException
      */
     public UDPSender(int port, DatagramSocket soc) throws SocketException {
-        this.bos = new ByteArrayOutputStream(50000000);
+        this.bos = new ByteArrayOutputStream(30000000);
         this.soc = soc;
         this.destPort = port;
         this.addrDist = null;
