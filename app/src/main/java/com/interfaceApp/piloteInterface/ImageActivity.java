@@ -19,7 +19,6 @@ public class ImageActivity extends Activity {
     Button btn2 ;
     Button btn3 ;
     Button btn4 ;
-    private Bitmap image;
     private ImageView imageView;
     private FacadeInterface inter;
 
