@@ -40,7 +40,7 @@ public class UDPReceiver extends Thread {
     public UDPReceiver(FacadeCom f, DatagramSocket soc, typeUser nom, InetAddress addr) throws IOException {
         this.fcom = f;
         this.server = soc;
-        bufIn = new byte[5000000];
+        bufIn = new byte[50000000];
         this.nom = nom;
         this.addrLoc = addr;
     }
