@@ -73,6 +73,7 @@ public class ImageActivity extends Activity {
 
     @Override
     protected void onResume(){
+        super.onResume();
         this.inter.sendDepartPhotos();
     }
 
