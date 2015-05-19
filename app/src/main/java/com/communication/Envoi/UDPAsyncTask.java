@@ -49,6 +49,7 @@ public class UDPAsyncTask extends AsyncTask<ComParams, String, String> {
                     break;
                 case PHOTO:
                     send.sendPhoto(params[i].getPhoto());
+                    result = "** Envoi photo";
                     break;
                 case DebutPhoto:
                     send.envoiDebutPhoto();

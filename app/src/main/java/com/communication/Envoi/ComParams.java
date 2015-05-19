@@ -52,6 +52,7 @@ public class ComParams {
         this.com = com;
         this.sender = this.com.getSender();
         this.contenu = typeContenu.PHOTO;
+        this.photo=photo;
         this.info = null;
         this.drone = dr;
         this.affiche = "";
