@@ -215,8 +215,9 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
 
            // System.out.println(lol);
            /* params.setJpegQuality(5);
-            params.setPictureSize(100,50);
-           // camera.setParameters(params);
+            params.setPictureSize(100,50);*/
+            params.setJpegQuality(5);
+            camera.setParameters(params);
 
            /* handlerCam.removeCallbacks(takePictureTask);
             handlerCam.postDelayed(takePictureTask, 1600);*/
@@ -243,6 +244,7 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
         public void run() {
             if(camera!=null){
                 takePicture();
+                camera.startPreview();
                 handlerCam.postDelayed(this, 1600);
             }
 
@@ -253,8 +255,9 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
         // Sera lancée une fois l'image traitée, on l'envoie direct sans la transformer
         Camera.PictureCallback jpegCallback = new Camera.PictureCallback() {
             public void onPictureTaken(byte[] data, Camera camera) {
-                camera.startPreview();
+
                 com.sendPhoto(data);
+
             }
         };
         camera.takePicture(null, null, jpegCallback);
