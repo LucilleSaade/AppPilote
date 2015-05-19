@@ -82,15 +82,15 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
         for (i=0; i<100; i++)
             onNewMessage("Les petits chou");
        */
-       /*
 
-        SurfaceView surface = (SurfaceView)findViewById(R.id.surface_view);
+
+        SurfaceView surface = (SurfaceView)findViewById(R.id.surfaceView);
 
         SurfaceHolder holder = surface.getHolder();
         holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         // On déclare que la classe actuelle gérera les callbacks
-        holder.addCallback(this);*/
+        holder.addCallback(this);
 
     }
 

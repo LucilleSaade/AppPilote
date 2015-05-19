@@ -33,7 +33,7 @@ public class ImageActivity extends Activity {
         btn2 = (Button) findViewById(R.id.button2);
         btn3 = (Button) findViewById(R.id.button3);
         btn4 = (Button) findViewById(R.id.button4);
-       // imageView = (ImageView) findViewById(R.id.imageView);
+        imageView = (ImageView) findViewById(R.id.imageView);
 
         //Tous les boutons créent l'envoi d'un FinPhoto avant de lancer une autre application
         btn1.setOnClickListener(new View.OnClickListener() {
