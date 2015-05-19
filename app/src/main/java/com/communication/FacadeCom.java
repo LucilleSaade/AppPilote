@@ -212,18 +212,22 @@ public class FacadeCom {
      * ***********************************************************
      * */
     public void sendPhoto(byte [] data){
-        Photo msg = new Photo(data);
-        ComParams params = new ComParams(this, typeContenu.PHOTO, msg, this.drone);
+        Photo photo = new Photo(data);
+        ComParams params = new ComParams(this, typeContenu.PHOTO, photo, this.drone);
         UDPAsyncTask task = new UDPAsyncTask();
         task.execute(params);
     }
 
     public void sendDebutPhoto(){
-        this.sender.envoiDebutPhoto();
+        ComParams params = new ComParams(this, typeContenu.DebutPhoto, this.drone);
+        UDPAsyncTask task = new UDPAsyncTask();
+        task.execute(params);
     }
 
     public void sendFinPhoto(){
-        this.sender.envoiFinPhoto();
+        ComParams params = new ComParams(this,  typeContenu.FinPhoto, this.drone);
+        UDPAsyncTask task = new UDPAsyncTask();
+        task.execute(params);
     }
 
     public void processDebutPhoto(){

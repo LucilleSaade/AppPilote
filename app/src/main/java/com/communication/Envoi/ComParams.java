@@ -48,10 +48,10 @@ public class ComParams {
         this.affiche = msg;
     }
 
-    public ComParams(FacadeCom com, typeContenu type, Photo photo, boolean dr) {
+    public ComParams(FacadeCom com, typeContenu cont, Photo photo, boolean dr) {
         this.com = com;
         this.sender = this.com.getSender();
-        this.contenu = typeContenu.PHOTO;
+        this.contenu = cont;
         this.photo=photo;
         this.info = null;
         this.drone = dr;
