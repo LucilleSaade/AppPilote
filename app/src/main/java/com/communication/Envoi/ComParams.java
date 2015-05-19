@@ -86,7 +86,5 @@ public class ComParams {
         return photo;
     }
 
-    public void setPhoto(Photo photo) {
-        this.photo = photo;
-    }
+
 }

@@ -200,8 +200,8 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
         try{
             camera = Camera.open();
 
-            handlerCam.removeCallbacks(takePictureTask);
-            handlerCam.postDelayed(takePictureTask, 1600);
+           /* handlerCam.removeCallbacks(takePictureTask);
+            handlerCam.postDelayed(takePictureTask, 1600);*/
 
         }catch(Exception e){
             e.printStackTrace();
