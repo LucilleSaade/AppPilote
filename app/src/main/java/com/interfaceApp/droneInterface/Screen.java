@@ -13,6 +13,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.hardware.Camera.Parameters ;
 
 import com.interfaceApp.FacadeInterface;
 
@@ -198,6 +199,8 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
             System.out.println("fonction on Resume");
         }*/
         try{
+            camera.getParameters().setJpegQuality(10);
+            camera.setParameters(camera.getParameters());
             camera = Camera.open();
 
            /* handlerCam.removeCallbacks(takePictureTask);
