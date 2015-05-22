@@ -74,7 +74,7 @@ public class FacadeCom {
 
 
     /**
-     * Permet de recuperer l'instance de FacadeInterface
+     * Permet de recuperer l'instance de FacadeInterface avec les paramètres (typeUser nom, FacadeInterface inter, boolean drone)
      * @return singleton
      */
     public static FacadeCom getInstance(typeUser nom, FacadeInterface inter, boolean drone) {
@@ -89,7 +89,9 @@ public class FacadeCom {
     }
 
 
-    // pilote
+    /**
+     * Methiode appelée par l'application pilote lors de la connection du pilote au drone. Cette methode appelle la methode sendHello() du sender.
+     **/
     public void demandeConnect() {
         this.etat = etatCom.EnConnexion;
         while (this.etat == etatCom.EnConnexion) {
@@ -108,7 +110,10 @@ public class FacadeCom {
     }
 
 
-    // pilote
+    /**
+     * Methode appelée par l'application pilote lors de la deconnection du pilote au drone. Cette methode va appeler la methode sendGoodbye() du sender. 
+     * La methode send goodBye() sera appelé 3 fois maximum ou jusqu'à ce qu'il est recu un ack.
+     **/
     public void demandeDeconnect() {
         int compteur = 0;
         this.etat = etatCom.Fin_Wait1;
@@ -128,7 +133,10 @@ public class FacadeCom {
         this.sender.setAddrDist(null);
     }
 
-    // drone normalement
+    /**
+     * Methode appelée lors de la reception d'un hello. Si le drone recoit un hello, l'application va afficher "reception d'un hello" puis renvoyer 
+     * un helloAck. Cette methode prend en paramètre l'addresse IP de l'emetteur du hello. Elle va ensuite l'enregistrer dans son sender. 
+     **/
     public void processHello(InetAddress addr) {
         this.addrDist = addr;
         this.etat = etatCom.Connecte;
@@ -166,6 +174,10 @@ public class FacadeCom {
     }
 
 
+
+    /**
+     * Methode appelée lors de la reception d'un helloAck. Cette methode prend en paramètre l'addresse IP de l'emetteur du hello. Elle va ensuite l'enregistrer dans son sender. 
+     **/
     public void processHelloAck(InetAddress addr) {
         this.addrDist = addr;
         this.etat = etatCom.Connecte;
@@ -173,17 +185,18 @@ public class FacadeCom {
         // appeler fonction connexion réussi de l'interface
     }
 
+
+    /**
+     * Methode appelée lors de la reception d'un goodbye. Si cette reception est une réponse à un precedent goodbye envoyé, l'application se considére déconnectée, sinon elle renvoie un goodbye et se considère déconnecté.
+     * Dans tous les cas elle met à null l'adresse Ip de l'application distante.
+     **/
     public void processGoodbye() {
         if (this.etat == etatCom.Fin_Wait1) {
             this.etat = etatCom.Deconnecte;
             //fonction déconnexion réussie
         } else {
             ComParams params;
-            if (this.nom == typeUser.DRONE) {
-                params = new ComParams(this, typeContenu.GOODBYE, this.drone);
-            } else {
-                params = new ComParams(this, typeContenu.GOODBYE, this.drone);
-            }
+            params = new ComParams(this, typeContenu.GOODBYE, this.drone);
             UDPAsyncTask task = new UDPAsyncTask();
             task.execute(params);
             this.etat = etatCom.Deconnecte;
@@ -192,6 +205,10 @@ public class FacadeCom {
         this.sender.setAddrDist(null);
     }
 
+
+    /**
+     * Methode appelée pour l'envoi périodique de l'objet info.
+     **/
     public void sendInfo() {
 
         infoHandler.post(new Runnable() {
@@ -248,6 +265,10 @@ public class FacadeCom {
         this.inter.processInfo(infos);
     }
 
+
+    /**
+     * Methode appelé par l'application drone pour l'affichage de message sur son activité principale.
+     **/
     public void printDrone(String msg) {
         ComParams params = new ComParams(this, this.drone, msg);
         UDPAsyncTask task = new UDPAsyncTask();
