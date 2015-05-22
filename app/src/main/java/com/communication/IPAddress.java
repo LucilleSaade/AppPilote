@@ -10,8 +10,7 @@ import java.util.Enumeration;
 public class IPAddress {
 
     /**
-     * Retourne toutes les adresses ips des carte réseau de la machine. Retourne seulement les addresses IPV4
-     *
+     * Parcours toutes les adresses ips des carte réseau de la machine et retourne seulement l'adresse IPV4 (qui n'est pas celle de loopback).
      * @return Une liste des addresses ip
      */
     public static InetAddress getIp(){
