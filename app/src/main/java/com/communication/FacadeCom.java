@@ -23,7 +23,23 @@ import static java.lang.Thread.*;
  * Created by lucille on 24/03/15.
  */
 public class FacadeCom {
-
+    /**
+     * private static FacadeCom singleton : singleton de la class FacadeCom
+     * private DatagramSocket daSocket : instance du Datagram Socket utilisé pour les UDPsender et UDPreceiver
+     * private int port : port d'envoi de l'UDPsender
+     * private UDPSender sender : instance d'UDPSender
+     * private UDPReceiver receiver : instance d'UDPreceiver
+     * private Screen screen : instance de la principale activité de l'application drone
+     * private typeUser nom : = PILOTE s'il s'agit de la facadeCom de l'application pilote, = DRONE s'il s'agit de la facadeCom de l'application drone,
+     * private InetAddress addrDist : adresse IP de l'application distante
+     * private InetAddress addrLoc : adresse locale de l'application locale
+     * private etatCom etat : etat de l'application (concernant la connection)
+     * private static Informations info : objet envoyé reguliérement du drone au pilote
+     * private FacadeInterface inter : instance de la facadeInterface de l'application
+     * private static boolean drone : = true s'il s'agit du drone, = false s'il s'agit du pilote
+     * private Handler infoHandler : handler utilisé pour l'envoi de l'objet info 
+     * private Handler helloHandler : handler utilisé pour l'affichage de message sur l'application drone lors de la reception d'un hello
+     **/
     private static FacadeCom singleton ;
 
     private DatagramSocket daSocket;
