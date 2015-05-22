@@ -10,6 +10,12 @@ import com.interfaceApp.droneInterface.Screen;
  */
 public class GPSParams {
 
+    /**
+     * private Screen screen : instance de l'activité principale de l'application drone
+     * private GPSTracker gps : instance de la classe
+     * private FacadeCom com;
+     * private boolean drone;
+     **/
     private Screen screen;
     private GPSTracker gps;
     private FacadeCom com;
