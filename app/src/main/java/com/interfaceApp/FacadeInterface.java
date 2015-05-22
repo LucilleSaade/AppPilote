@@ -6,8 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.communication.FacadeCom;
+import com.google.android.gms.maps.model.LatLng;
 import com.interfaceApp.droneInterface.Screen;
 import com.interfaceApp.piloteInterface.ImageActivity;
+import com.interfaceApp.piloteInterface.MapActivity;
 import com.message.Informations;
 
 /**
@@ -77,6 +79,9 @@ public class FacadeInterface {
     }
 
     public void processInfo(Informations info) {
+
+        final LatLng COORD = new LatLng( info.getLatitude(), info.getLongitude());
+        MapActivity.COORDINATES = COORD;
 
     }
     public void recupererPhoto(byte [] data){

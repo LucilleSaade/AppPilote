@@ -1,5 +1,6 @@
 package com.interfaceApp.piloteInterface;
 
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -28,9 +29,12 @@ public class MapActivity extends FragmentActivity {
     Button btn5 ;
     Button btn6 ;
     Button btn7 ;
+    int i = 0;
 
     private GoogleMap mMap;
     static final LatLng TOULOUSE = new LatLng(43.604, 1.446);
+    public static LatLng COORDINATES ;
+    private Handler handler = new Handler();
 
 
     @Override
@@ -46,6 +50,7 @@ public class MapActivity extends FragmentActivity {
         btn5 = (Button) findViewById(R.id.button5);
         btn6 = (Button) findViewById(R.id.button6);
         btn7 = (Button) findViewById(R.id.button7);
+
 
 
 
@@ -100,8 +105,9 @@ public class MapActivity extends FragmentActivity {
         });
 
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(TOULOUSE,15));
 
+        handler.removeCallbacks(updateMarkerTask);
+        handler.postDelayed(updateMarkerTask, 1000);
 
 
     }
@@ -112,15 +118,39 @@ public class MapActivity extends FragmentActivity {
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
-            // Check if we were successful in obtaining the map.
+            /* Check if we were successful in obtaining the map.
             if (mMap != null) {
-                setUpMap();
-            }
+                setUpMap(TOULOUSE);
+            }*/
         }
     }
 
-    private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(TOULOUSE).title("Marker"));
+   private Runnable updateMarkerTask = new Runnable() {
+        public void run() {
+
+            LatLng TEST = COORDINATES;
+            /*if(i ==0){
+                TEST = COORDINATES;
+                i = 1;
+            }
+            else {
+                TEST=TOULOUSE;
+                i = 0;
+            }*/
+            mMap.addMarker(new MarkerOptions().position(TEST).title("Marker"));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(TEST,18));
+            handler.postDelayed(this, 5000);
+        }
+    };
+
+    //public LatLng getCoordinates(LatLng COORD){ return COORD ;}
+
+    public void setUpMap() {
+        int i = 0;
+        if(i ==0) {
+            mMap.addMarker(new MarkerOptions().position(COORDINATES).title("Marker"));
+        }
+
     }
 
     @Override
@@ -145,8 +175,24 @@ public class MapActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    protected void onStop() {
+        super.onStop();
+        handler.removeCallbacks(updateMarkerTask);
+
+    }
+
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+        handler.removeCallbacks(updateMarkerTask);
+        handler.postDelayed(updateMarkerTask, 1000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if ( handler != null )
+            handler.removeCallbacks(updateMarkerTask);
+        handler = null;
     }
 }
