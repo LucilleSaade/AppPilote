@@ -16,7 +16,7 @@ public class UDPSender {
 
 
     /**
-     * Object use to send everything except a file to a remote user.
+     * Objet utilisé pour envoyer les informations, hello, helloAck et goodbye.
      */
     private ByteArrayOutputStream bos;
     private DatagramSocket soc;
@@ -26,8 +26,8 @@ public class UDPSender {
 
 
     /**
-     * UDPReceiver constructor :
-     * instantiate the hostname field, the bos field (ByteArrayOutputStream), the soc field and the destPort field.
+     * UDPReceiver constructeur :
+     * instancie les champs hostnaùe, bos (ByteArrayOutputStream), soc et destPort
      * @param port : int
      * @param soc : DatagramSocket
      * @throws java.net.SocketException
@@ -41,8 +41,7 @@ public class UDPSender {
 
 
     /**
-     * sendTo() : if the AbstractMessage is a Hello or a GoodBye, send on Broadcast the AbstractMessage after having serialized it
-     * if not send only to the recipient.
+     * sendTo() : envoi l'objet passé en paramètre à l'adresse passée en paramètre
      * @param obj : AbstractMessage
      * @param address : InetAddress
      */
@@ -74,7 +73,9 @@ public class UDPSender {
         }
     }
 
-
+    /**
+     * Methode appeléelors de la connexion du pilote au droe pour l'envoi d'hello
+     */
     public void connecter() {
         InetAddress address;
         Hello obj = new Hello();
