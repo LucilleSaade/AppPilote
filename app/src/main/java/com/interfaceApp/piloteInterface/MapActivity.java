@@ -20,6 +20,17 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 
 import com.interfaceApp.R;
 
+/**
+ * Classe MapActivity, de type FragmentActivity pour pouvoir utiliser une GoogleMaps.
+ * ATTRIBUTS :
+ * 8 boutons;
+ * moving : indique le mode de la caméra de la map (déplacement ou statique);
+ * mMap: correspond à la Map, de type GoogleMap de l'API ;
+ * COORDONNEES: contient les coordonnées envoyées par le drone,
+ * de type LatLng qui appartient à l'API,
+ * attribut public pour pouvoir y accéder depuis la classe FacadeInterface;
+ * handler : permet de gérer le thread périodique updateMarkerTask.
+ */
 public class MapActivity extends FragmentActivity {
 
     Button btn1 ;
@@ -34,10 +45,17 @@ public class MapActivity extends FragmentActivity {
 
     private GoogleMap mMap;
     static final LatLng TOULOUSE = new LatLng(43.604, 1.446);
-    public static LatLng COORDINATES ;
+    public static LatLng COORDONNEES ;
     private Handler handler = new Handler();
 
 
+    /**
+     * OnCreate() : Création de l'activité, quand l'utilisateur y vient pour la première fois.
+     * @param savedInstanceState
+     * Création des 8 boutons ( menu + boutons pour la map)
+     * Association à chaque bouton de sa fonction
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +73,7 @@ public class MapActivity extends FragmentActivity {
 
 
 
-
+        // Bouton Home --> retourne sur l'activité home
         btn1.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -65,12 +83,16 @@ public class MapActivity extends FragmentActivity {
                 finish();
             }
         });
+
+        // Bouton Map --> ne fait rien
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
+
+        // Bouton Image --> passe sur l'activité Image
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,6 +101,8 @@ public class MapActivity extends FragmentActivity {
                 finish();
             }
         });
+
+        // Bouton Quit --> retourne sur l'activité Connect
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,18 +111,35 @@ public class MapActivity extends FragmentActivity {
                 finish();
             }
         });
+
+    /** BOUTONS ASSOCIES A LA MAP **/
+
+        /**
+         * Bouton Satellite --> carte en mode satellite
+         * grâce à la méthode setMapType de l'API
+         */
         btn5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
             }
         });
+
+        /**
+         * Bouton Terrain--> carte en mode terrain
+         * grâce à la méthode setMapType de l'API
+         */
         btn6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
             }
         });
+
+        /**
+         * Bouton Normal--> carte en mode normal
+         * grâce à la méthode setMapType de l'API
+         */
         btn7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,10 +147,16 @@ public class MapActivity extends FragmentActivity {
             }
         });
 
+        /**
+         * Bouton Moving --> permet d'activer le mouvement de la caméra de la map.
+         * Moving = 0 --> la caméra bouge
+         * Moving = 1 --> la caméra est à l'arrêt
+         * l'appuie sur ce bouton permet de passer d'un mode à l'autre.
+         */
         btn8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if( moving==0) {
+                if( moving == 0) {
                     moving = 1;
                     btn8.setText("Start Moving");
                 }
@@ -121,6 +168,11 @@ public class MapActivity extends FragmentActivity {
         });
 
 
+        /**
+         * Lancement du thread updateMarkerTask, et instanciation de la période : 1000ms
+         * grâce à postDelayed. Auparavant on supprime les tâches updateMarkerTask
+         * qui pourraient déjà être lancées, avec la méthode removeCallbacks.
+         */
 
         handler.removeCallbacks(updateMarkerTask);
         handler.postDelayed(updateMarkerTask, 1000);
@@ -128,39 +180,34 @@ public class MapActivity extends FragmentActivity {
 
     }
 
+    /**
+     * Methode appelée pour récupérer la map depuis internet, grâce à des fonctions de l'API
+     */
     private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
+        // On vérifie que mMap est null et n'a ps déjà été instancié
         if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
+            // Essaie d'obtenir la map de SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
-            /* Check if we were successful in obtaining the map.
-            if (mMap != null) {
-                setUpMap(TOULOUSE);
-            }*/
         }
     }
 
+    /**
+     * thread updateMarkerTask
+     * utilise la fonction addMarker de l'API googleMaps pour positionner le marker sur mMap
+     * puis, si le mode moving est activé, la caméra de la maps se positionne sur la
+     * coordonnée récupérée dans l'attribut COORDONNEES, avec un zoom de coefficient 15.
+     */
    private Runnable updateMarkerTask = new Runnable() {
         public void run() {
 
-
-
-            mMap.addMarker(new MarkerOptions().position(COORDINATES).title("Marker"));
+            mMap.addMarker(new MarkerOptions().position(COORDONNEES).title("Marker"));
             if(moving == 0) {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(COORDINATES, 15));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(COORDONNEES, 15));
             }
             handler.postDelayed(this, 1000);
         }
     };
-
-    public void setUpMap() {
-        int i = 0;
-        if(i ==0) {
-            mMap.addMarker(new MarkerOptions().position(COORDINATES).title("Marker"));
-        }
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -184,12 +231,22 @@ public class MapActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * onStop(): Quand l'utilisateur sort de l'activité
+     * Arrêt de la tâche updteMarkerTask lorsqu'on sort de l'activité Map,
+     * avec la méthode removeCallbacks.
+     */
+    @Override
     protected void onStop() {
         super.onStop();
         handler.removeCallbacks(updateMarkerTask);
 
     }
 
+    /**
+     * onResume() : Quand l'utilisateur revient sur l'activité,
+     * on relance la tâche updateMarkerTask grâce à postDelayed
+     */
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
@@ -197,6 +254,10 @@ public class MapActivity extends FragmentActivity {
         handler.postDelayed(updateMarkerTask, 1000);
     }
 
+    /**
+     * OnDestroy() : Destruction de l'activité.
+     * Arrêt de la tâche updteMarkerTask lorsque l'activité Map est détruite.
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();

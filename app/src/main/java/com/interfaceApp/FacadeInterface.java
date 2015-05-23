@@ -78,12 +78,25 @@ public class FacadeInterface {
         this.com.demandeDeconnect();
     }
 
+    /**
+     * Méthode utilisée par le pilote qui récupère l'information envoyée par le drone.
+     * @param info
+     *              La nouvelle info envoyée par le drone.
+     * Ecrit dans l'attribut COORDONNEES de l'activité Map la nouvelle coordonnée contenue dans info.
+     *
+     */
     public void processInfo(Informations info) {
 
         final LatLng COORD = new LatLng( info.getLatitude(), info.getLongitude());
-        MapActivity.COORDINATES = COORD;
+        MapActivity.COORDONNEES = COORD;
 
     }
+
+    /**
+     * Méthode utilisée par le pilote qui récupère l'image envoyée par le drone.
+     * @param data
+     *
+     */
     public void recupererPhoto(byte [] data){
         image = BitmapFactory.decodeByteArray(data, 0, data.length);
         if(firstActivity instanceof ImageActivity){
