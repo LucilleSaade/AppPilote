@@ -74,7 +74,7 @@ public class UDPSender {
     }
 
     /**
-     * Methode appeléelors de la connexion du pilote au droe pour l'envoi d'hello
+     * Methode appelée lors de la connexion du pilote au droe pour l'envoi d'hello
      */
     public void connecter() {
         InetAddress address;
