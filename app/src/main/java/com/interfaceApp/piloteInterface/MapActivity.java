@@ -29,7 +29,8 @@ public class MapActivity extends FragmentActivity {
     Button btn5 ;
     Button btn6 ;
     Button btn7 ;
-    int i = 0;
+    Button btn8 ;
+    int moving = 0;
 
     private GoogleMap mMap;
     static final LatLng TOULOUSE = new LatLng(43.604, 1.446);
@@ -50,6 +51,7 @@ public class MapActivity extends FragmentActivity {
         btn5 = (Button) findViewById(R.id.button5);
         btn6 = (Button) findViewById(R.id.button6);
         btn7 = (Button) findViewById(R.id.button7);
+        btn8 = (Button) findViewById(R.id.button8);
 
 
 
@@ -104,6 +106,20 @@ public class MapActivity extends FragmentActivity {
             }
         });
 
+        btn8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if( moving==0) {
+                    moving = 1;
+                    btn8.setText("Start Moving");
+                }
+                else{
+                    moving = 0;
+                    btn8.setText("Stop Moving");
+                }
+            }
+        });
+
 
 
         handler.removeCallbacks(updateMarkerTask);
@@ -128,22 +144,15 @@ public class MapActivity extends FragmentActivity {
    private Runnable updateMarkerTask = new Runnable() {
         public void run() {
 
-            LatLng TEST = COORDINATES;
-            /*if(i ==0){
-                TEST = COORDINATES;
-                i = 1;
+
+
+            mMap.addMarker(new MarkerOptions().position(COORDINATES).title("Marker"));
+            if(moving == 0) {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(COORDINATES, 15));
             }
-            else {
-                TEST=TOULOUSE;
-                i = 0;
-            }*/
-            mMap.addMarker(new MarkerOptions().position(TEST).title("Marker"));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(TEST,18));
-            handler.postDelayed(this, 5000);
+            handler.postDelayed(this, 1000);
         }
     };
-
-    //public LatLng getCoordinates(LatLng COORD){ return COORD ;}
 
     public void setUpMap() {
         int i = 0;
