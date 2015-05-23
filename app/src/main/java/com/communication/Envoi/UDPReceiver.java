@@ -19,7 +19,7 @@ import com.message.*;
 public class UDPReceiver extends Thread {
 
     /**
-     * Object use to receiver everything except a file to a remote user.
+     * Objet utilisé pour recevoir tous les messages sauf les images.
      */
 
     private FacadeCom fcom; //A IMPLEMENTER
@@ -30,8 +30,8 @@ public class UDPReceiver extends Thread {
 
 
     /**
-     * UDPReceiver constructor :
-     * instantiate the ChatNI field, the Datagram socket field, and the byte[] field.
+     * UDPReceiver constructeur :
+     * instancie les champs FacadeCom, Datagram socket et byte[]
      * @param f : FacadeCom
      * @param soc : DatagramSocket
      * @param nom : String
@@ -47,9 +47,8 @@ public class UDPReceiver extends Thread {
 
 
     /**
-     * run() : instantiate a DatagramPacket object (packet), launch the DatagramSocket's method receive(packet)
-     * Manage the AbstractMessage received and depending on the Type if the AbstractMessage (Hello, HelloACK, Goodbye, Message)
-     * call the correct method of the ChatNI object.
+     * run() : instancie un DatagramPacket (packet), lance la methode receive(packet) de la classe DatagramSocket.
+     * Gére l'AbstractMessage reçu et suivant le type de l'AbstractMessage, appelle la bonne methode de la FacadeCom.
      */
     public void run() {
         ObjectInput in = null;

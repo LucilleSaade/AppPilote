@@ -26,30 +26,56 @@ public class GPSTracker extends Thread implements LocationListener {
 
     private FacadeCom com;
 
-    // flag for GPS status
+    /**
+     * boolean isGPSEnabled : flag for GPS status
+     */
     boolean isGPSEnabled = false;
 
-    // flag for network status
+    /** 
+     *  boolean isNetworkEnabled : flag for network status
+     */
     boolean isNetworkEnabled = false;
 
-    // flag for GPS status
+    /** 
+     * boolean canGetLocation : flag for GPS status
+     */
     boolean canGetLocation = false;
 
-    Location location; // location
-    double latitude; // latitude
-    double longitude; // longitude
+    /**
+     * Location location : location du device
+     */
+    Location location;
+    
+    /**
+     * double latitude : latitude du device
+     */
+    double latitude;
+    
+    /**
+     *  double longitude : longitude
+     */
+    double longitude;
 
-    // The minimum distance to change Updates in meters
+    /**
+     * static final long MIN_DISTANCE_CHANGE_FOR_UPDATES : The minimum distance to change Updates in meters
+     */
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
 
-    // The minimum time between updates in milliseconds
+    /**
+     * static final long MIN_TIME_BW_UPDATES : The minimum time between updates in milliseconds
+     */
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
 
-    // Declaring a Location Manager
+    /**
+     * LocationManager locationManager : Declaring a Location Manager
+     */
     protected LocationManager locationManager;
 
     private Looper looper;
 
+    /**
+     * Constructeur de la classe GPSTracker
+     */
     public GPSTracker(Context context) {
         this.mContext = context;
         this.com=FacadeCom.getSingleton();
@@ -61,6 +87,9 @@ public class GPSTracker extends Thread implements LocationListener {
     }
 
 
+    /**
+     * run du thread GPSTracker, regarde périodiquement (1s) la localisation du device
+     */
     public void run() {
 
         this.looper.prepare();
@@ -81,7 +110,10 @@ public class GPSTracker extends Thread implements LocationListener {
 
 
 
-
+    /**
+     * Methode appelée au début de l'exécution du thread, initialise tous ce qui est necessaire pour trouver la localisation du device
+     * et met à jour la localisation.
+     */
     public Location getLocation() {
 
         try {
@@ -148,7 +180,8 @@ public class GPSTracker extends Thread implements LocationListener {
     }
 
     /**
-     * Stop using GPS listener
+     * Arrète l'utilisation du GPS
+     * Appeler cette methode va arrter l'utilisation du GPS
      * Calling this function will stop using GPS in your app
      * */
     public void stopUsingGPS(){
@@ -158,7 +191,7 @@ public class GPSTracker extends Thread implements LocationListener {
     }
 
     /**
-     * Function to get latitude
+     * Methode retournant la latitude
      * */
     public double getLatitude(){
         if(location != null){
@@ -171,7 +204,7 @@ public class GPSTracker extends Thread implements LocationListener {
     }
 
     /**
-     * Function to get longitude
+     * Methode retournant la longitude
      * */
     public double getLongitude(){
         if(location != null){
@@ -183,6 +216,9 @@ public class GPSTracker extends Thread implements LocationListener {
         return longitude;
     }
 
+    /**
+     * Methode retournant le looper
+     * */
     public Looper getLooper() {
         return looper;
     }
@@ -195,6 +231,10 @@ public class GPSTracker extends Thread implements LocationListener {
         return this.canGetLocation;
     }
 
+
+    /**
+     * Methode appelée periodiquement par le thread du GPSTracker pour mettre a jour la localisation
+     */
     @Override
     public void onLocationChanged(Location location) {
         this.longitude = location.getLongitude();
