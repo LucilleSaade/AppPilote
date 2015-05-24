@@ -13,6 +13,11 @@ public class UDPAsyncTask extends AsyncTask<ComParams, String, String> {
     private FacadeCom com;
     private boolean drone;
 
+/**
+ * Cette classe sert à envoyer en UDP des objets par un autre thread que le thread principal.
+ */
+
+
     @Override
     // On peut y mettre plusieurs params dans la fonction de base mais dans notre cas il faut en mettre un seul
     protected String doInBackground(ComParams... params) {
@@ -67,7 +72,9 @@ public class UDPAsyncTask extends AsyncTask<ComParams, String, String> {
         return result;
     }
 
-
+/**
+ * Méthode s'executant à la fin de la méthode doInBackground. result est le string retourné par la méthode doInBackground.
+ */
     public void onPostExecute(String result) {
         if (drone) {
             this.com.getInter().printTxt(result);
