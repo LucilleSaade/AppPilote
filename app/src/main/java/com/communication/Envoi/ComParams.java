@@ -18,7 +18,9 @@ public class ComParams {
     private String affiche;
     private boolean drone;
 
-
+    /**
+     * Constructeur utilisé pour l'envoi d'un objet Informations
+     */
     public ComParams(FacadeCom com, typeContenu cont, Informations info, boolean dr) {
         this.com = com;
         this.sender = this.com.getSender();
@@ -28,7 +30,9 @@ public class ComParams {
         this.affiche="";
     }
 
-
+    /**
+     * Constructeur utilisé pour l'envoi des messages de connexion et déconnexion (Hello, HelloAck, Goodbye)
+     */
     public ComParams(FacadeCom com, typeContenu cont, boolean dr) {
         this.com = com;
         this.sender = this.com.getSender();
@@ -38,7 +42,9 @@ public class ComParams {
     }
 
 
-
+    /**
+     * Constructeur utilisé pour l'affichage de message sur l'interface de l'application drone
+     */
     public ComParams(FacadeCom com, boolean dr, String msg) {
         this.com = com;
         this.sender = this.com.getSender();
@@ -48,6 +54,9 @@ public class ComParams {
         this.affiche = msg;
     }
 
+    /**
+     * Constructeur utilisé pour l'envoi de photo
+     */
     public ComParams(FacadeCom com, typeContenu cont, Photo photo, boolean dr) {
         this.com = com;
         this.sender = this.com.getSender();
