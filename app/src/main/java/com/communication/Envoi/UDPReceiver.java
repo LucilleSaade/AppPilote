@@ -22,7 +22,7 @@ public class UDPReceiver extends Thread {
      * Objet utilisé pour recevoir tous les messages sauf les images.
      */
 
-    private FacadeCom fcom; //A IMPLEMENTER
+    private FacadeCom fcom;
     private DatagramSocket server ;
     private byte[] bufIn;
     private typeUser nom;
