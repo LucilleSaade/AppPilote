@@ -26,6 +26,7 @@ public class HomeActivity extends Activity {
     FacadeInterface inter ;
     TextView t1;
     TextView batteryLevel ;
+    TextView coord_value ;
     int i =0;
     private Handler handler = new Handler();
 
@@ -41,6 +42,8 @@ public class HomeActivity extends Activity {
         t1 = (TextView) findViewById(R.id.textView3);
 
         batteryLevel = (TextView) findViewById(R.id.batteryLevel);
+
+        coord_value = (TextView) findViewById(R.id.textView6);
 
         btn1.setOnClickListener(new View.OnClickListener() {
 
@@ -90,16 +93,11 @@ public class HomeActivity extends Activity {
 
     private void updateBattery() {
         if (i==0){
-            Context context = getApplicationContext();
-            IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-            Intent batteryStatus = context.registerReceiver(null, ifilter);
-            int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-            int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-
-            float batteryPct = level / (float)scale;
+            Float batteryPct=this.inter.getBattery();
             String mytext = Float.toString(batteryPct*100);
             batteryLevel.setText(mytext + " %");
             i=1;
+            coord_value.setText("( "+Double.toString(this.inter.getLatitude())+" ; "+Double.toString(this.inter.getLongitude())+" )");
         }else{
             batteryLevel.setText("Ca marche !!");
             i=0;

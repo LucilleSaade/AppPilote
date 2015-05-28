@@ -11,7 +11,7 @@
         android:layout_marginTop="10dp"
         android:textSize="40dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Bienvenue dans le controle du drone "
+        android:text="Bienvenue dans le controle du drone   "
         android:id="@+id/Bienvenue"
         android:gravity="center" />
 

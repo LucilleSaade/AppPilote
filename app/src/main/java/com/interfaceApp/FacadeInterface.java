@@ -25,6 +25,8 @@ public class FacadeInterface {
     private boolean drone;
     private float batteryLevel ;
     private Bitmap image;
+    private double latitude ;
+    private double longitude ;
 
 
     private FacadeInterface(Activity activity) {
@@ -89,7 +91,9 @@ public class FacadeInterface {
 
         final LatLng COORD = new LatLng( info.getLatitude(), info.getLongitude());
         MapActivity.COORDONNEES = COORD;
-
+        this.batteryLevel = info.getBattery_level() ;
+        this.latitude = info.getLatitude();
+        this.longitude = info.getLongitude();
     }
 
     /**
@@ -111,10 +115,16 @@ public class FacadeInterface {
     public void sendFinPhotos(){
         this.com.sendFinPhoto();
     }
-
-    public void receiveBattery(float batteryLevel){
-        this.batteryLevel = batteryLevel ;
+    public float getBattery(){
+        return this.batteryLevel;
     }
+    public double getLatitude(){
+        return this.latitude;
+    }
+    public double getLongitude(){
+        return this.longitude;
+    }
+
     /********************************
      *       PARTIE POUR DRONE      *
      ********************************/
@@ -131,10 +141,6 @@ public class FacadeInterface {
 
     public void setDroneActivity(Screen droneActivity) {
         this.droneActivity = droneActivity;
-    }
-
-    public void sendBattery(float batteryLevel){
-
     }
 
     public void processDebutPhoto(){
