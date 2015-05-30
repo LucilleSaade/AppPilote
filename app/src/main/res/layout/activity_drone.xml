@@ -22,8 +22,8 @@
         android:background="#ff141470" />
 
     <SurfaceView
-        android:layout_width="@android:dimen/thumbnail_width"
-        android:layout_height="@android:dimen/thumbnail_height"
+        android:layout_width="129dp"
+        android:layout_height="166dp"
         android:id="@+id/surfaceView"
         android:layout_gravity="right" />
 

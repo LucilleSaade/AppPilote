@@ -18,3 +18,4 @@ public class Photo extends AbstractMessage {
         this.image = image;
     }
 }
+

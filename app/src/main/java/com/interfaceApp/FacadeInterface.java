@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Looper;
 
+import com.communication.Envoi.ComParams;
+import com.communication.Envoi.UDPAsyncTask;
 import com.communication.FacadeCom;
 import com.google.android.gms.maps.model.LatLng;
 import com.interfaceApp.droneInterface.Screen;
@@ -28,6 +32,8 @@ public class FacadeInterface {
     private double latitude ;
     private double longitude ;
 
+    private Activity currentActivity;
+    private Handler imageHandler = new Handler(Looper.getMainLooper());
 
     private FacadeInterface(Activity activity) {
         firstActivity = activity;
@@ -68,7 +74,12 @@ public class FacadeInterface {
 
     public void changeActivity(Class activity) {
         Intent i = new Intent(firstActivity, activity);
-        firstActivity.startActivityForResult(i, 1);
+        firstActivity.startActivity(i);
+        System.out.println("CHANGE ACTIVITY : " + firstActivity);
+    }
+
+    public void setCurrentActivity(Activity currentActivity){
+        this.currentActivity = currentActivity ;
     }
 
 
@@ -102,11 +113,23 @@ public class FacadeInterface {
      *
      */
     public void recupererPhoto(byte [] data){
+        System.out.println("Facade Interface : Récupérer Photo");
         image = BitmapFactory.decodeByteArray(data, 0, data.length);
-        if(firstActivity instanceof ImageActivity){
-            ((ImageActivity)firstActivity).afficherImage(image);
-        }
+        System.out.println("Facade Interface : Récupérer Photo 2222222");
+        System.out.println("FIRST ACTIVITY : " + currentActivity);
 
+        imageHandler.post(new Runnable() {
+
+            public void run() {
+                if(currentActivity instanceof ImageActivity){
+                    System.out.println("Facade Interface : Récupérer Photo DANS LE IFFFFFFFFF");
+                    ((ImageActivity)currentActivity).afficherImage(image);
+                }
+            }
+        });
+
+
+        System.out.println("Facade Interface : Récupérer Photo 33333333");
     }
 
     public void sendDepartPhotos(){
@@ -152,4 +175,7 @@ public class FacadeInterface {
         //Changer de mode et arrêter prévisualisation et envoi
         this.droneActivity.arretPhoto();
     }
+
+
+
 }

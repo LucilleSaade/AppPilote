@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 
+import com.interfaceApp.FacadeInterface;
 import com.interfaceApp.R;
 
 /**
@@ -33,6 +34,7 @@ import com.interfaceApp.R;
  */
 public class MapActivity extends FragmentActivity {
 
+    FacadeInterface inter;
     Button btn1 ;
     Button btn2 ;
     Button btn3 ;
@@ -71,6 +73,7 @@ public class MapActivity extends FragmentActivity {
         btn7 = (Button) findViewById(R.id.button7);
         btn8 = (Button) findViewById(R.id.button8);
 
+        inter = FacadeInterface.getInstance(this);
 
 
         // Bouton Home --> retourne sur l'activité home
@@ -106,6 +109,7 @@ public class MapActivity extends FragmentActivity {
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                inter.demandeDeconnect();
                 Intent intent = new Intent(MapActivity.this, ConnectActivity.class);
                 startActivity(intent);
                 finish();

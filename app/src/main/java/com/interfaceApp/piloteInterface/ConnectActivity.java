@@ -31,8 +31,9 @@ public class ConnectActivity extends Activity {
             @Override
             public void onClick(View v) {
                 ConnectActivity.this.inter.demandeConnect();
-                Intent intent = new Intent(ConnectActivity.this, HomeActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(ConnectActivity.this, HomeActivity.class);
+                //startActivity(intent);
+                inter.changeActivity(HomeActivity.class);
             }
         });
 

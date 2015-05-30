@@ -94,6 +94,7 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
         // On déclare que la classe actuelle gérera les callbacks
         holder.addCallback(this);
 
+
     }
 
 
@@ -146,25 +147,16 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
         this.gps = new GPSTracker(this);
         this.gps.start();
 
- /*       updateLocation();
-        handlerLoc.removeCallbacks(updateLocationTask);
-        handlerLoc.postDelayed(updateLocationTask, 1000);
-*/
         updateBattery();
         handlerBat.removeCallbacks(updateBatteryTask);
         handlerBat.postDelayed(updateBatteryTask, 1000);
     }
 
-
-    private Runnable updateLocationTask = new Runnable() {
-        public void run() {
-            updateLocation();
-            handlerLoc.postDelayed(this, 1000);
-        }
-    };
-
-    private void updateLocation() {
-        this.gps.getLocation();
+    public void onDeconnectedState() {
+        if ( handlerBat != null )
+            handlerBat.removeCallbacks(updateBatteryTask);
+        handlerBat = null;
+        this.gps.interrupt();
     }
 
 
@@ -174,6 +166,7 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
         handlerLoc.removeCallbacks(updateBatteryTask);
         handlerCam.removeCallbacks(takePictureTask);
     }
+
 
 
 
@@ -193,34 +186,30 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
     @Override
     protected void onResume() {
         super.onResume();
-       /* if (this.connected) {
-            super.onResume();
-            handler.removeCallbacks(updateBatteryTask);
-            handler.postDelayed(updateBatteryTask, 1000);
-            System.out.println("fonction on Resume");
-        }*/
+
         try{
 
-            camera = Camera.open();
+            camera = getCameraInstance();
 
             Camera.Parameters params = camera.getParameters();
-           // List<Camera.Size> lol = params.getSupportedPictureSizes();
+            // List<Camera.Size> lol = params.getSupportedPictureSizes();
 
-        /*    for (int i=0;i<lol.size();i++){
-                result = (Size) lol.get(i);
-                Log.i("PictureSize", "Supported Size. Width: " + result.width + "height : " + result.height);
-            }*/
+    /*    for (int i=0;i<lol.size();i++){
+            result = (Size) lol.get(i);
+            Log.i("PictureSize", "Supported Size. Width: " + result.width + "height : " + result.height);
+        }*/
 
-           // camera.Size() lol2 = new camera.Size() ;
+            // camera.Size() lol2 = new camera.Size() ;
 
-           // System.out.println(lol);
-           /* params.setJpegQuality(5);
-            params.setPictureSize(100,50);*/
+            // System.out.println(lol);
+       /* params.setJpegQuality(5);
+        params.setPictureSize(100,50);*/
+            camera.setDisplayOrientation(90);
             params.setJpegQuality(5);
             camera.setParameters(params);
 
-           /* handlerCam.removeCallbacks(takePictureTask);
-            handlerCam.postDelayed(takePictureTask, 1600);*/
+       /* handlerCam.removeCallbacks(takePictureTask);
+        handlerCam.postDelayed(takePictureTask, 1600);*/
 
         }catch(Exception e){
             e.printStackTrace();
@@ -245,7 +234,7 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
             if(camera!=null){
                 takePicture();
                 camera.startPreview();
-                handlerCam.postDelayed(this, 1600);
+                handlerCam.postDelayed(this, 1500);
             }
 
         }
@@ -255,12 +244,14 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
         // Sera lancée une fois l'image traitée, on l'envoie direct sans la transformer
         Camera.PictureCallback jpegCallback = new Camera.PictureCallback() {
             public void onPictureTaken(byte[] data, Camera camera) {
-
+                System.out.println("Envoi de photo (screen)");
                 com.sendPhoto(data);
+                System.out.println("photo envoyé (screen)");
 
             }
         };
         camera.takePicture(null, null, jpegCallback);
+        //camera.stopPreview();
     }
 
     // Se déclenche quand la surface est créée
@@ -286,12 +277,25 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
 
     public void lancerPhoto(){
         handlerCam.removeCallbacks(takePictureTask);
-        handlerCam.postDelayed(takePictureTask, 1600);
+        handlerCam.postDelayed(takePictureTask, 1500);
     }
 
     public void arretPhoto(){
         handlerCam.removeCallbacks(takePictureTask);
         camera.stopPreview();
+    }
+
+
+    /** A safe way to get an instance of the Camera object. */
+    public static Camera getCameraInstance(){
+        Camera c = null;
+        try {
+            c = Camera.open(); // attempt to get a Camera instance
+        }
+        catch (Exception e){
+            // Camera is not available (in use or does not exist)
+        }
+        return c; // returns null if camera is unavailable
     }
 
     public static FacadeCom getCom() {

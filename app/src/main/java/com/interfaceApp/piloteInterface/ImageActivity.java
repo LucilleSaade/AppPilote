@@ -3,6 +3,7 @@ package com.interfaceApp.piloteInterface;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,14 +35,17 @@ public class ImageActivity extends Activity {
         btn4 = (Button) findViewById(R.id.button4);
         imageView = (ImageView) findViewById(R.id.imageView);
 
+        inter.setCurrentActivity(this);
+
         //Tous les boutons créent l'envoi d'un FinPhoto avant de lancer une autre application
         btn1.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 inter.sendFinPhotos();
-                Intent intent = new Intent(ImageActivity.this, HomeActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(ImageActivity.this, HomeActivity.class);
+                //startActivity(intent);
+                inter.changeActivity(HomeActivity.class);
                 finish();
             }
         });
@@ -49,8 +53,9 @@ public class ImageActivity extends Activity {
             @Override
             public void onClick(View v) {
                 inter.sendFinPhotos();
-                Intent intent = new Intent(ImageActivity.this, MapActivity.class);
-                startActivity(intent);
+               // Intent intent = new Intent(ImageActivity.this, MapActivity.class);
+                //startActivity(intent);
+                inter.changeActivity(MapActivity.class);
                 finish();
             }
         });
@@ -63,8 +68,10 @@ public class ImageActivity extends Activity {
             @Override
             public void onClick(View v) {
                 inter.sendFinPhotos();
-                Intent intent = new Intent(ImageActivity.this, ConnectActivity.class);
-                startActivity(intent);
+                inter.demandeDeconnect();
+                //Intent intent = new Intent(ImageActivity.this, ConnectActivity.class);
+                //startActivity(intent);
+                inter.changeActivity(ConnectActivity.class);
                 finish();
             }
         });
@@ -99,6 +106,17 @@ public class ImageActivity extends Activity {
     }
 
     public void afficherImage(Bitmap image){
+        System.out.println("ImageActivity : afficher image");
         imageView.setImageBitmap(image);
+        //imageView.setImageBitmap(RotateBitmap(image,90));
     }
+
+
+
+   /* public static Bitmap RotateBitmap(Bitmap source, float angle)
+    {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+    }*/
 }

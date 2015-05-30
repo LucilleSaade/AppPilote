@@ -39,7 +39,7 @@ public class HomeActivity extends Activity {
         btn2 = (Button) findViewById(R.id.button2);
         btn3 = (Button) findViewById(R.id.button3);
         btn4 = (Button) findViewById(R.id.button4);
-        t1 = (TextView) findViewById(R.id.textView3);
+      //  t1 = (TextView) findViewById(R.id.textView);
 
         batteryLevel = (TextView) findViewById(R.id.batteryLevel);
 
@@ -55,24 +55,29 @@ public class HomeActivity extends Activity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, MapActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(HomeActivity.this, MapActivity.class);
+                //startActivity(intent);
+                inter.changeActivity(MapActivity.class);
                 finish();
             }
         });
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, ImageActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(HomeActivity.this, ImageActivity.class);
+                //startActivity(intent);
+                inter.changeActivity(ImageActivity.class);
+
                 finish();
             }
         });
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, ConnectActivity.class);
-                startActivity(intent);
+                inter.demandeDeconnect();
+                //Intent intent = new Intent(HomeActivity.this, ConnectActivity.class);
+                //startActivity(intent);
+                inter.changeActivity(ConnectActivity.class);
                 finish();
             }
         });
@@ -99,7 +104,7 @@ public class HomeActivity extends Activity {
             i=1;
             coord_value.setText("( "+Double.toString(this.inter.getLatitude())+" ; "+Double.toString(this.inter.getLongitude())+" )");
         }else{
-            batteryLevel.setText("Ca marche !!");
+            batteryLevel.setText("Batterie drone ");
             i=0;
         }
     }

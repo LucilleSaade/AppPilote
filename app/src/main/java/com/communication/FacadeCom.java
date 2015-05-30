@@ -7,12 +7,15 @@ import com.communication.Envoi.ComParams;
 import com.communication.Envoi.UDPAsyncTask;
 import com.communication.Envoi.UDPReceiver;
 import com.communication.Envoi.UDPSender;
+import com.communication.TCP.TCPSender;
+import com.communication.TCP.TCPServer;
 import com.interfaceApp.FacadeInterface;
 import com.interfaceApp.droneInterface.Screen;
 import com.interfaceApp.typeUser;
 import com.message.*;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.SocketException;
 import java.io.IOException;
 
@@ -52,11 +55,15 @@ public class FacadeCom {
     private InetAddress addrLoc;
     private etatCom etat;
     private static Informations info;
+    private Photo photo;
     private FacadeInterface inter;
     private static boolean drone;
+    private TCPServer tcpServer;
     private Handler infoHandler = new Handler(Looper.getMainLooper());
     private Handler helloHandler = new Handler(Looper.getMainLooper());
 
+
+    private int portTCP;
     /**
      * *****
      * Gestion de l'envoi et reception des goodbye pas vérifiée
@@ -68,6 +75,7 @@ public class FacadeCom {
         try {
             this.nom = nom;
             this.port = 1234;
+            this.portTCP = 7891;
             this.daSocket = new DatagramSocket(this.port);
             this.daSocket.setBroadcast(true);
             this.sender = new UDPSender(this.port, this.daSocket);
@@ -80,6 +88,8 @@ public class FacadeCom {
             this.info = new Informations(0.0,0.0,0);
             this.inter = inter;
             this.drone = drone;
+            this.tcpServer = new TCPServer(new ServerSocket(this.portTCP),this);
+            this.tcpServer.start();
         } catch (SocketException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -219,6 +229,9 @@ public class FacadeCom {
         }
         this.addrDist = null;
         this.sender.setAddrDist(null);
+        if (this.drone)
+        this.screen.onDeconnectedState();
+
     }
 
 
@@ -226,15 +239,13 @@ public class FacadeCom {
      * Methode appelée pour l'envoi périodique de l'objet info.
      **/
     public void sendInfo() {
-
-        infoHandler.post(new Runnable() {
+       infoHandler.post(new Runnable() {
             public void run() {
                 ComParams params = new ComParams(FacadeCom.getSingleton(),typeContenu.INFORMATIONS, FacadeCom.info, FacadeCom.drone);
                 UDPAsyncTask task = new UDPAsyncTask();
                 task.execute(params);
             }
         });
-        // ...
     }
 
 
@@ -246,9 +257,12 @@ public class FacadeCom {
      * */
     public void sendPhoto(byte [] data){
         Photo photo = new Photo(data);
-        ComParams params = new ComParams(this, typeContenu.PHOTO, photo, this.drone);
+        PhotoSize size = new PhotoSize(data.length);
+        TCPSender tsender = new TCPSender(this.addrDist, size, photo, this.portTCP, this);
+        tsender.start();
+       /* ComParams params = new ComParams(this, typeContenu.PHOTO, photo, this.drone);
         UDPAsyncTask task = new UDPAsyncTask();
-        task.execute(params);
+        task.execute(params);*/
     }
 
     public void sendDebutPhoto(){
@@ -279,6 +293,12 @@ public class FacadeCom {
 
     public void processInfo(Informations infos) {
         this.inter.processInfo(infos);
+    }
+
+
+    public void photoReceived(byte[] tof) {
+        System.out.println("Reception d'une photo : comm");
+        this.inter.recupererPhoto(tof);
     }
 
 
