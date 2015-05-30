@@ -7,9 +7,11 @@ import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.interfaceApp.FacadeInterface;
 import com.interfaceApp.R;
@@ -34,7 +36,10 @@ public class HomeActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.system_page);
+
         inter = FacadeInterface.getInstance(this);
+        inter.setCurrentActivity(this);
+
         btn1 = (Button) findViewById(R.id.button);
         btn2 = (Button) findViewById(R.id.button2);
         btn3 = (Button) findViewById(R.id.button3);
@@ -107,6 +112,11 @@ public class HomeActivity extends Activity {
             batteryLevel.setText("Batterie drone ");
             i=0;
         }
+    }
+
+    public void afficherBluetoothRecu(){
+        Toast.makeText(getApplicationContext(), "Personne en danger détectée !! ", Toast.LENGTH_LONG).show();
+
     }
 
     @Override

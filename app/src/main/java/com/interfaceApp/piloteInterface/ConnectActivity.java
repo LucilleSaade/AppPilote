@@ -26,6 +26,7 @@ public class ConnectActivity extends Activity {
         btn = (Button) findViewById(R.id.button);
         t1 = (TextView) findViewById(R.id.textView2);
         this.inter = FacadeInterface.getInstance(this);
+        inter.setCurrentActivity(this);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

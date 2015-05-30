@@ -11,5 +11,6 @@ public enum typeContenu {
     PHOTO,
     DebutPhoto,
     FinPhoto,
-    PRINT
+    PRINT,
+    BluetoothDetecte
 }

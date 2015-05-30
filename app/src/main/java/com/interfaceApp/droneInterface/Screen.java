@@ -13,17 +13,16 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.hardware.Camera.Parameters ;
-import android.hardware.Camera.Size ;
 import com.interfaceApp.FacadeInterface;
-
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import com.communication.GPS.GPSTracker;
 import com.communication.FacadeCom;
 
 import com.interfaceApp.R;
 
 import java.io.IOException;
-import java.util.List;
 
 
 /**
@@ -42,6 +41,8 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
     private GPSTracker gps;
     private Camera camera = null;
     private Handler handlerCam = new Handler();
+    private Handler handlerBlu = new Handler();
+    private BluetoothAdapter bluetoothAdapter;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -53,37 +54,10 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
         this.com.setScreen(this);
         this.inter.setDroneActivity(this);
         this.connected = false;
+        inter.setCurrentActivity(this);
 
         console = (TextView) findViewById(R.id.Console);
 
-        /*
-        final ScheduledExecutorService scheduledPool = Executors.newSingleThreadScheduledExecutor();
-
-        scheduledPool.scheduleWithFixedDelay(new Runnable() {
-
-            @Override
-            public void run() {
-                Context context = getApplicationContext();
-                IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-                Intent batteryStatus = context.registerReceiver(null, ifilter);
-                int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-                int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-
-                float batteryPct = level / (float)scale;
-                inter.sendBattery(batteryPct);
-            }
-
-        }, 0, 2, TimeUnit.SECONDS);
-        */
-
-       /* Test des fonctions
-        onMessage("Youhou");
-        onNewMessage("Salut");
-        int i;
-
-        for (i=0; i<100; i++)
-            onNewMessage("Les petits chou");
-       */
 
 
         SurfaceView surface = (SurfaceView)findViewById(R.id.surfaceView);
@@ -95,6 +69,14 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
         holder.addCallback(this);
 
 
+
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter == null)
+            Toast.makeText(getApplicationContext(), "Pas de Bluetooth",
+                    Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getApplicationContext(), "Avec Bluetooth",
+                    Toast.LENGTH_SHORT).show();
     }
 
 
@@ -150,13 +132,42 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
         updateBattery();
         handlerBat.removeCallbacks(updateBatteryTask);
         handlerBat.postDelayed(updateBatteryTask, 1000);
+
+        handlerBlu.removeCallbacks(findBluetoothDevices);
+        handlerBlu.postDelayed(findBluetoothDevices, 10000);
     }
+    private Runnable findBluetoothDevices = new Runnable() {
+        public void run() {
+            findBluetoothDevices();
+            handlerBlu.postDelayed(this, 10000);
+        }
+    };
 
     public void onDeconnectedState() {
         if ( handlerBat != null )
             handlerBat.removeCallbacks(updateBatteryTask);
         handlerBat = null;
         this.gps.interrupt();
+    }
+
+    public final BroadcastReceiver bluetoothReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                // BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                Toast.makeText(getApplicationContext(),"Personne en danger détectée !! ",Toast.LENGTH_LONG).show();
+                com.sendBluetoothDetecte();
+            }
+
+        }
+    };
+    public void findBluetoothDevices(){
+
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        registerReceiver(bluetoothReceiver, filter);
+        Toast.makeText(getApplicationContext(),"Discovery launched",Toast.LENGTH_LONG).show();
+
+        bluetoothAdapter.startDiscovery();
     }
 
 
@@ -181,6 +192,12 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
         if ( handlerCam != null )
             handlerCam.removeCallbacks(takePictureTask);
         handlerBat = null;
+
+        if ( handlerBlu != null )
+            handlerBlu.removeCallbacks(takePictureTask);
+        handlerBlu = null;
+        bluetoothAdapter.cancelDiscovery();
+        unregisterReceiver(bluetoothReceiver);
     }
 
     @Override
@@ -192,29 +209,14 @@ public class Screen extends Activity implements SurfaceHolder.Callback{
             camera = getCameraInstance();
 
             Camera.Parameters params = camera.getParameters();
-            // List<Camera.Size> lol = params.getSupportedPictureSizes();
 
-    /*    for (int i=0;i<lol.size();i++){
-            result = (Size) lol.get(i);
-            Log.i("PictureSize", "Supported Size. Width: " + result.width + "height : " + result.height);
-        }*/
-
-            // camera.Size() lol2 = new camera.Size() ;
-
-            // System.out.println(lol);
-       /* params.setJpegQuality(5);
-        params.setPictureSize(100,50);*/
             camera.setDisplayOrientation(90);
             params.setJpegQuality(5);
             camera.setParameters(params);
 
-       /* handlerCam.removeCallbacks(takePictureTask);
-        handlerCam.postDelayed(takePictureTask, 1600);*/
 
         }catch(Exception e){
             e.printStackTrace();
-            // System.out.println("ouverture de la camera impossible");
-
         }
     }
 

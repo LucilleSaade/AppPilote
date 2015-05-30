@@ -277,6 +277,12 @@ public class FacadeCom {
         task.execute(params);
     }
 
+    public void sendBluetoothDetecte(){
+        ComParams params = new ComParams(this,  typeContenu.BluetoothDetecte, this.drone);
+        UDPAsyncTask task = new UDPAsyncTask();
+        task.execute(params);
+    }
+
     public void processDebutPhoto(){
         //Commencer le début de la prise de vue et de l'envoi de photos
         this.inter.processDebutPhoto();
@@ -285,6 +291,11 @@ public class FacadeCom {
     public void processFinPhoto(){
         //Changer de mode et arrêter prévisualisation et envoi
         this.inter.processFinPhoto();
+    }
+
+    public void processBluetoothDetecte(){
+        //Commencer le début de la prise de vue et de l'envoi de photos
+        this.inter.processBluetoothDetecte();
     }
 
     public void processPhoto(Photo img){

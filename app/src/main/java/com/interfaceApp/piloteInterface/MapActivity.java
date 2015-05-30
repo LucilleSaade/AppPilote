@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -74,6 +76,7 @@ public class MapActivity extends FragmentActivity {
         btn8 = (Button) findViewById(R.id.button8);
 
         inter = FacadeInterface.getInstance(this);
+        inter.setCurrentActivity(this);
 
 
         // Bouton Home --> retourne sur l'activité home
@@ -213,6 +216,11 @@ public class MapActivity extends FragmentActivity {
         }
     };
 
+
+    public void afficherBluetoothRecu(){
+        Toast.makeText(getApplicationContext(), "Personne en danger détectée !! ", Toast.LENGTH_LONG).show();
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

@@ -7,11 +7,12 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.communication.Envoi.ComParams;
-import com.communication.Envoi.UDPAsyncTask;
+/*import com.communication.Envoi.ComParams;
+import com.communication.Envoi.UDPAsyncTask;*/
 import com.communication.FacadeCom;
 import com.google.android.gms.maps.model.LatLng;
 import com.interfaceApp.droneInterface.Screen;
+import com.interfaceApp.piloteInterface.HomeActivity;
 import com.interfaceApp.piloteInterface.ImageActivity;
 import com.interfaceApp.piloteInterface.MapActivity;
 import com.message.Informations;
@@ -34,6 +35,7 @@ public class FacadeInterface {
 
     private Activity currentActivity;
     private Handler imageHandler = new Handler(Looper.getMainLooper());
+    private Handler blueHandler = new Handler(Looper.getMainLooper());
 
     private FacadeInterface(Activity activity) {
         firstActivity = activity;
@@ -130,6 +132,23 @@ public class FacadeInterface {
 
 
         System.out.println("Facade Interface : Récupérer Photo 33333333");
+    }
+
+    public void processBluetoothDetecte(){
+        imageHandler.post(new Runnable() {
+            public void run() {
+                if (currentActivity instanceof ImageActivity) {
+
+                    ((ImageActivity) currentActivity).afficherBluetoothRecu();
+                } else if (currentActivity instanceof MapActivity) {
+
+                    ((MapActivity) currentActivity).afficherBluetoothRecu();
+
+                } else if (currentActivity instanceof HomeActivity) {
+                    ((HomeActivity) currentActivity).afficherBluetoothRecu();
+                }
+            }
+        });
     }
 
     public void sendDepartPhotos(){

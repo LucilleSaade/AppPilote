@@ -3,6 +3,7 @@ package com.communication.Envoi;
 import android.os.AsyncTask;
 
 import com.communication.FacadeCom;
+import com.interfaceApp.piloteInterface.ImageActivity;
 import com.message.typeContenu;
 
 /**
@@ -63,6 +64,10 @@ public class UDPAsyncTask extends AsyncTask<ComParams, String, String> {
                 case FinPhoto:
                     send.envoiFinPhoto();
                     result = "** Envoi fin photo";
+                    break;
+                case BluetoothDetecte:
+                    send.envoiBluetoothDetecte();
+                    result = "** Envoi Signal Personne détectée";
                     break;
                 default:
                     result = "!!!!!! Erreur d'envoi, mauvais typeContenu";

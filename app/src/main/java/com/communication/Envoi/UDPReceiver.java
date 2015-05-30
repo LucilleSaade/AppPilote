@@ -93,7 +93,11 @@ public class UDPReceiver extends Thread {
                     } else if (inMessage.getTypeContenu() == typeContenu.FinPhoto){
                         System.out.println(this.nom + " : Je reçois un fin photo de " + packet.getAddress() + "  ! ");
                         this.fcom.processFinPhoto();
+                    } else if (inMessage.getTypeContenu() == typeContenu.BluetoothDetecte){
+                        System.out.println(this.nom + " : Je reçois un Bluetooth detecte de " + packet.getAddress() + "  ! ");
+                        this.fcom.processBluetoothDetecte();
                     }
+
                 } else {
                    System.out.println(this.nom + " : Je reçois mon propre Hello (" + packet.getAddress() + ") je ne le traite pas ! " + " ! ");
                 }

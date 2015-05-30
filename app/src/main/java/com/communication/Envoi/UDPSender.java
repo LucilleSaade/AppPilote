@@ -157,6 +157,15 @@ public class UDPSender {
             e.printStackTrace();
         }
     }
+    public void envoiBluetoothDetecte() {
+        BluetoothDetecte obj = new BluetoothDetecte();
+        try {
+            System.out.println("Envoi d'un message à l'autre");
+            sendTo(obj, this.addrDist);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void setAddrDist(InetAddress addr) {
         this.addrDist = addr;
