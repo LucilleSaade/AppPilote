@@ -48,20 +48,20 @@ public class TCPReceiver extends Thread {
 
         try {
             InputStream is = (InputStream) soc.getInputStream();
-            // Lecture du filemsg
+            // Lecture du photosize
             is.read(bufIn);
             ByteArrayInputStream byteIn = new ByteArrayInputStream(bufIn);
             ObjectInput oi= new ObjectInputStream(byteIn);
             DataInputStream dis = new DataInputStream(is);
 
             System.out.println("reception du filmsg");
-            // Lecture du filemsg
+            // Lecture du photosize
             PhotoSize size = (PhotoSize) oi.readObject();
 
             System.out.println("Reception du file dans le buffer");
 
             System.out.println("enregistrement du file sur le disque");
-            // Ecriture dans le "fmsg.getNameFile()" du file present dans le bufIn
+            
             int len = dis.readInt();
             byte[] data = new byte[len];
             if (len > 0) {
