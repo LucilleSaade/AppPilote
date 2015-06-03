@@ -65,7 +65,7 @@ public class TCPSender extends Thread {
 
             System.out.println("envoi de la taille");
 
-            // Ecriture dans le flux de sortie, envoie du file message ne contenant que le nom et la taille du fichier
+            // Ecriture dans le flux de sortie, envoi du file message ne contenant que le nom et la taille du fichier
             oos.writeObject(this.size);
             bufOut = this.bos.toByteArray();
             os.write(bufOut);
